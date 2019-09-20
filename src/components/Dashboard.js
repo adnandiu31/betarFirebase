@@ -183,10 +183,10 @@ import Users from './Users'
             </ul>
           </div>
           <div className="main">
-            {/* <Users />
+            <Users />
             <Stations />
             <Manufactures />
-            <Products /> */}
+            <Products />
             <Intents 
               userInfo={this.state.userInfo}
               intentBundle={this.state.intentBundle}
