@@ -12,8 +12,9 @@ import {Link } from 'react-router-dom'
           createStationFormVisible: false
       }
 
-      this.stationNameRef = createRef();
-      this.stationAddressRef = createRef();
+      this.productTypeOfManual = createRef();
+      this.productNameoOfManual = createRef();
+      this.fileOfManual = createRef();
     }
     
     componentDidMount() {
@@ -23,10 +24,12 @@ import {Link } from 'react-router-dom'
       });
     }
 
-    createStation = event => {
-      event.preventDefault();
-      this.addStation(this.stationNameRef.current.value, this.stationAddressRef.current.value);
-      event.currentTarget.reset();
+    addManual = event => {
+        event.preventDefault();
+        console.log(event.target.value)
+    //   event.preventDefault();
+    //   this.addStation(this.stationNameRef.current.value, this.stationAddressRef.current.value);
+    //   event.currentTarget.reset();
     };
 
     addStation = (name, address) => {
@@ -80,14 +83,17 @@ import {Link } from 'react-router-dom'
                 >        
                     <Card
                         style={{margin: '2px'}} 
-                        title={<span style={{color:'rgb(0, 75, 222)'}}>Manual List</span>}
+                        title={<span style={{color:'rgb(0, 75, 222)'}}>Product Manual List</span>}
                         extra={
+                            <>
                             <Icon 
                                 style={{color: 'green'}} 
                                 type="edit" 
                                 key="edit" 
                                 onClick={this.createStationFormShow}
                             />
+                            <span style={{color:'rgb(0, 75, 222)'}}>Add Manual </span>                            
+                            </>
                         }
                     >
                     
@@ -99,8 +105,9 @@ import {Link } from 'react-router-dom'
                                 >{Object.keys(this.state.stations).length>0?
                                     <thead>
                                         <tr style={{border: "1px solid rgba(0, 0, 0, 0.1)"}}>
-                                            <th scope="col">Station Name</th>
-                                            <th scope="col">Address</th>
+                                            <th scope="col">Product Type</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Manual</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
@@ -112,6 +119,15 @@ import {Link } from 'react-router-dom'
                                             style={{border: "1px solid rgba(0, 0, 0, 0.1)"}}
                                         >
                                             <td>{key}</td>
+                                            <td>
+                                                <ContentEditable
+                                                    html={this.state.stations[key].Address}
+                                                    data-column="item"
+                                                    className="content-editable"
+                                                    key={key}
+                                                    onChange={(event)=>this.updateStationAddress(key, event.target.value)}
+                                                />
+                                            </td>
                                             <td>
                                                 <ContentEditable
                                                     html={this.state.stations[key].Address}
@@ -135,28 +151,37 @@ import {Link } from 'react-router-dom'
                             </div>
 
                             <div className='col-lg-6 col-md-12 col-sm-12'>{this.state.createStationFormVisible === true?
-                                <form onSubmit={this.createStation}>
+                                <form onSubmit={this.addManual}>
+                                    {/* onSubmit={this.createStation} */}
                                     <div className="form-group">
-                                        Station Name
-                                        <input
-                                            name="stationName"
-                                            className="form-control"
-                                            type="text"
-                                            ref={this.stationNameRef}
-                                        />
+                                        Product Type
+                                        <select className="form-control"   ref={this.productTypeOfManual} >
+                                            <option  className="dropdown-item" >Choose Type</option>
+                                            <option  className="dropdown-item" key="1" value="instrument">Instrument</option>
+                                            <option  className="dropdown-item" key="2" value="parts">Parts</option>
+                                        </select>                  
                                     </div>
                                 
                                     <div className="form-group">
-                                        Address
+                                        Product Name
                                         <input
                                             name="stationAddress"
                                             className="form-control"
                                             type="text"
                                             autoComplete="none"
-                                            ref={this.stationAddressRef}
+                                            ref={this.productNameoOfManual}
                                         />
                                     </div>
-                                
+                                    {/* <div className="form-group"> */}
+                                        Upload Manual
+                                        <input
+                                            name="file"
+                                            className="form-control"
+                                            type="file"
+                                            autoComplete="none"
+                                            ref={this.fileOfManual}
+                                        />
+                                    {/* </div> */}
                                     <button 
                                         type="submit"
                                         className="btn btn-primary"
