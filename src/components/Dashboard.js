@@ -151,12 +151,12 @@ import {Link} from 'react-router-dom'
             <ul className="nav nav-tabs">
               <li className="nav-item">
                 <Link to="/manual-list"  >
-                <a style={{color: 'black'}} className="nav-link" >Stations</a>
+                <a style={{color: 'black'}} className="nav-link" >Manual List</a>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to="/FAQ">
-                  <a style={{color: 'black'}} className="nav-link" >Manufactures</a>
+                  <a style={{color: 'black'}} className="nav-link" >FAQ</a>
                 </Link>
                 
               </li>
