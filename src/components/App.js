@@ -17,9 +17,9 @@ import Dashboard from './Dashboard';
 
 import Navbar from '../components/Navbar';
 import Header from '../components/Header';
-
+import Manufactures from '../components/Manufactures'
 import FlashMessage from '../components/FlashMessage';
-
+import ManualList from '../components/Stations';
 class App extends Component {
   constructor(props){
     super(props)
@@ -71,6 +71,8 @@ class App extends Component {
             <Route exact path="/accountCreated" component={() => 
               <h1 className="content">Account created. <Link to="/login">
               Proceed to Dashboard</Link></h1>} />
+            <Route exact path="/FAQ" component={Manufactures }  />
+            <Route exact path="/manual-list" component={ManualList} />
           </Fragment>
         </Router>
       </AppProvider>

@@ -2,12 +2,7 @@ import React, {Component} from 'react';
 import {base} from '../firebase/firebase';
 import Stations from './Stations';
 import Manufactures from './Manufactures';
-import Products from './Proructs';
-import Intents from './Intents';
-import SRB from './SRB'
-import SIB from './SIB'
-import Ledger from './Ledger'
-import Users from './Users'
+import {Link} from 'react-router-dom'
 
   class Dashboard extends Component {
     constructor(props){
@@ -155,59 +150,26 @@ import Users from './Users'
           >
             <ul className="nav nav-tabs">
               <li className="nav-item">
-                <a style={{color: 'black'}} className="nav-link" href="#users">Users</a>
+                <Link to="/manual-list"  >
+                <a style={{color: 'black'}} className="nav-link" >Stations</a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a style={{color: 'black'}} className="nav-link" href="#stations">Stations</a>
+                <Link to="/FAQ">
+                  <a style={{color: 'black'}} className="nav-link" >Manufactures</a>
+                </Link>
+                
               </li>
 
-              <li className="nav-item">
-                <a style={{color: 'black'}} className="nav-link" href="#manufactures">Manufactures</a>
-              </li>
-
-              <li className="nav-item">
-                <a style={{color: 'black'}} className="nav-link" href="#products">Products</a>
-              </li>
-              <li className="nav-item">
-                <a style={{color: 'black'}} className="nav-link" href="#indent">Indent</a>
-              </li>
-              <li className="nav-item">
-                <a style={{color: 'black'}} className="nav-link" href="#SRB">SRB</a>
-              </li>
-              <li className="nav-item">
-                <a style={{color: 'black'}} className="nav-link" href="#SIB">SIB</a>
-              </li>
-              <li className="nav-item">
-                <a style={{color: 'black'}} className="nav-link" href="#ledger">Ledger</a>
-              </li>
+              
             </ul>
           </div>
           <div className="main">
-            <Users />
+            
             <Stations />
             <Manufactures />
-            <Products />
-            <Intents 
-              userInfo={this.state.userInfo}
-              intentBundle={this.state.intentBundle}
-              
-              addProductIntent={this.addProductIntent}
-              updateRunningIntentSelected={this.state.updateRunningIntentSelected}
-              updateRunningIntentLastYear={this.updateRunningIntentLastYear}
-              updateRunningIntentNextYear={this.updateRunningIntentNextYear}
-              updateRunningIntentProductManufacturer={this.updateRunningIntentProductManufacturer}
-              updateRunningIntentProductModel={this.updateRunningIntentProductModel}
-              updateRunningIntentProductName={this.updateRunningIntentProductName}
-              updateRunningIntentUse={this.updateRunningIntentUse}
-              updateRunningIntentSelected={this.updateRunningIntentSelected}
-              updateIntent={this.updateIntent}
-              createIntentBundle = {this.createIntentBundle}
-              deleteIndent = {this.deleteIndent}
-              indentApproval = {this.indentApproval}    
-            />
-            <SRB />
-            <SIB />
-            <Ledger />
+           
+           
           </div>
         </>:<h1>Session Out</h1>
       )

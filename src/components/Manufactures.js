@@ -2,7 +2,7 @@ import React, {Component, createRef} from 'react';
 import {base} from '../firebase/firebase';
 import { Card, Icon } from 'antd';
 import ContentEditable from 'react-contenteditable'
-
+import {Link} from 'react-router-dom'
   class Manufactures extends Component {
     constructor(props) {
       super(props);
@@ -62,7 +62,33 @@ import ContentEditable from 'react-contenteditable'
   
     render() {
         return  (
-            <>{this.state.manufactures?
+            <>
+            <div style={{
+              background:'#007bff',
+              position: 'sticky',
+              top: 0,
+              zIndex: 100
+            }} 
+            className="top-nav"
+          >
+            <ul className="nav nav-tabs">
+              <li className="nav-item">
+                  <Link to="/manual-list" >
+                  <a style={{color: 'black'}} className="nav-link" >Stations</a>
+                  </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/FAQ">
+                  <a style={{color: 'black'}} className="nav-link" >Manufactures</a>
+                </Link>
+                
+              </li>
+
+              
+            </ul>
+          </div>
+            {this.state.manufactures?
+                
                 <div 
                     id="manufactures" 
                     style={{width: '100%', padding: "25px"}} 
