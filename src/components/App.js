@@ -20,6 +20,7 @@ import Header from '../components/Header';
 import Manufactures from '../components/Manufactures'
 import FlashMessage from '../components/FlashMessage';
 import ManualList from '../components/Stations';
+import FAQ from '../components/FAQ'
 class App extends Component {
   constructor(props){
     super(props)
@@ -42,14 +43,16 @@ class App extends Component {
               visibleNavbar={this.state.visibleNavbar}
             />
             <FlashMessage />
-            <Route exact path="/" component={() => 
-              <h1 className="content">Welcome, Home!</h1>} />
+            <Route exact path="/" component={
+              () => <h1 className="content">Welcome, Home!</h1>
+            } />
             <Route exact path="/login" component={() => <Login />} />
             <Route exact path="/signup" component={() => <Signup />} />
             <Route exact path="/dashboard" component={() => <Consumer>
               {
                 ({ state }) => state.currentUser?
-                  <Dashboard user={state.currentUser} /> 
+                  // <Dashboard user={state.currentUser} /> 
+                  <FAQ />
                   :<div style={{display: "flex",  
                     alignItems: "center",
                     justifyContent: "center",
@@ -71,7 +74,8 @@ class App extends Component {
             <Route exact path="/accountCreated" component={() => 
               <h1 className="content">Account created. <Link to="/login">
               Proceed to Dashboard</Link></h1>} />
-            <Route exact path="/FAQ" component={Manufactures }  />
+            <Route exact path="/FAQ" component={FAQ}  />
+            <Route exact path="/register" component={Manufactures} />
             <Route exact path="/manual-list" component={ManualList} />
           </Fragment>
         </Router>

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {base} from '../firebase/firebase';
 import Stations from './Stations';
 import Manufactures from './Manufactures';
+import FAQ from './FAQ'
 import {Link} from 'react-router-dom'
 
   class Dashboard extends Component {
@@ -150,18 +151,20 @@ import {Link} from 'react-router-dom'
           >
             <ul className="nav nav-tabs">
               <li className="nav-item">
-                <Link to="/manual-list"  >
-                <a style={{color: 'black'}} className="nav-link" >Manual List</a>
+                <Link to="/manual-list" >
+                    <a style={{color: 'black'}} className="nav-link" >Manual List</a>                
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/register">
+                  <a style={{color: 'black'}} className="nav-link" >Trouble Shooting Register</a>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to="/FAQ">
                   <a style={{color: 'black'}} className="nav-link" >FAQ</a>
                 </Link>
-                
-              </li>
-
-              
+              </li>              
             </ul>
           </div>
           <div className="main">

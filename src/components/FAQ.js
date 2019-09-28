@@ -3,7 +3,7 @@ import {base, storage} from './../firebase/firebase';
 import { Card, Icon } from 'antd';
 import ContentEditable from 'react-contenteditable'
 import {Link } from 'react-router-dom'
-  class Stations extends Component {
+  class FAQ extends Component {
     constructor(props) {
       super(props);
 
@@ -37,7 +37,7 @@ import {Link } from 'react-router-dom'
       event.currentTarget.reset();
     };
     addFileToStorage = ( file) => {
-        // console.log(file)
+        console.log(file)
         // const {pdf} = this.state
         const uploadTask = storage.ref(`manuals/${file.name}`).put(file)
         uploadTask.on('state_changed',
@@ -47,24 +47,17 @@ import {Link } from 'react-router-dom'
             },
             ()=>{
                 storage.ref('manuals').child(file.name).getDownloadURL().then(url=>{
-                    // console.log(url)
-                    // console.log("hi")
+                    console.log(url)
                 })
             }
         )
-        console.log("CHECKING URL")
-        console.log( storage.ref('manuals').child(file.name).getDownloadURL().then(url => {
-            console.log(url)
-            this.setState({url})
-            console.log(this.state.url)
-        }))
     }
     handleFile = e => {
         if(e.target.files[0]){
             const pdf = e.target.files[0]
             this.setState({pdf})
         }
-        // console.log(e.target.files[0])
+        console.log(e.target.files[0])
     }
     addStation = (name, address) => {
       const stations = { ...this.state.stations };
@@ -73,7 +66,7 @@ import {Link } from 'react-router-dom'
     };
 
     deleteStation = name => {
-      const stations = {...this.state.stations} 
+      const stations = {...this.state.stations}
       stations[`${name}`] = null;
       this.setState({stations})
     }
@@ -85,8 +78,6 @@ import {Link } from 'react-router-dom'
     }
 
     createStationFormShow = () => this.setState({createStationFormVisible:!this.state.createStationFormVisible})
-
-    // This only                            
   
     render() {
         return  (
@@ -243,4 +234,4 @@ import {Link } from 'react-router-dom'
 }
 
 
-export default Stations
+export default FAQ
