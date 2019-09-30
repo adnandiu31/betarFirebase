@@ -10,6 +10,7 @@ import {Link } from 'react-router-dom'
       this.state={
           stations: null,
           createStationFormVisible: false,
+          manual: null,
           pdf: null,
           url: ""
       }
@@ -28,17 +29,19 @@ import {Link } from 'react-router-dom'
 
     addManual = event => {
         event.preventDefault();
-        // console.log(event.target.file[0])
-        console.log(this.productNameoOfManual.current.value, this.productTypeOfManual.current.value)
-        console.log("FILE")
         this.addFileToStorage(this.state.pdf)
-        //   event.preventDefault();
+        console.log(this.productTypeOfManual.current.value, this.productNameoOfManual.current.value)
     //   this.addStation(this.stationNameRef.current.value, this.stationAddressRef.current.value);
       event.currentTarget.reset();
     };
+
+    addStation = (name, address) => {
+        const stations = { ...this.state.stations };
+        stations[`${name}`] =  {'Address': address};
+        this.setState({ stations });
+    };
+
     addFileToStorage = ( file) => {
-        // console.log(file)
-        // const {pdf} = this.state
         const uploadTask = storage.ref(`manuals/${file.name}`).put(file)
         uploadTask.on('state_changed',
             (snapshot)=>{},
@@ -47,18 +50,14 @@ import {Link } from 'react-router-dom'
             },
             ()=>{
                 storage.ref('manuals').child(file.name).getDownloadURL().then(url=>{
-                    // console.log(url)
-                    // console.log("hi")
+                    this.setState({url})
+                    console.log("url")
+                    console.log(this.state.url)
                 })
             }
         )
-        console.log("CHECKING URL")
-        console.log( storage.ref('manuals').child(file.name).getDownloadURL().then(url => {
-            console.log(url)
-            this.setState({url})
-            console.log(this.state.url)
-        }))
     }
+    
     handleFile = e => {
         if(e.target.files[0]){
             const pdf = e.target.files[0]
@@ -66,12 +65,7 @@ import {Link } from 'react-router-dom'
         }
         // console.log(e.target.files[0])
     }
-    addStation = (name, address) => {
-      const stations = { ...this.state.stations };
-      stations[`${name}`] =  {'Address': address};
-      this.setState({ stations });
-    };
-
+    
     deleteStation = name => {
       const stations = {...this.state.stations} 
       stations[`${name}`] = null;
@@ -85,20 +79,11 @@ import {Link } from 'react-router-dom'
     }
 
     createStationFormShow = () => this.setState({createStationFormVisible:!this.state.createStationFormVisible})
-
-    // This only                            
   
     render() {
         return  (
             <>
-            <div style={{
-              background:'#007bff',
-              position: 'sticky',
-              top: 0,
-              zIndex: 100
-            }} 
-            className="top-nav"
-          >
+            <div className="top-nav" style={{ background:'#007bff',position: 'sticky',top: 0,zIndex: 100}} >
             <ul className="nav nav-tabs">
               <li className="nav-item">
                 <Link to="/manual-list" >
@@ -118,9 +103,7 @@ import {Link } from 'react-router-dom'
             </ul>
           </div>
             {this.state.stations?
-                <div 
-                    id="stations" 
-                    style={{width: '100%', padding: "0 25px"}} 
+                <div id="Manual" style={{width: '100%', padding: "0 25px"}} 
                 >        
                     <Card
                         style={{margin: '2px'}} 
@@ -139,7 +122,46 @@ import {Link } from 'react-router-dom'
                     >
                     
                         <div style={{float: 'center'}} className='row'>
-                            <div className='col-lg-6 col-md-12 col-sm-12'>
+                            <div className='col-lg-8 col-md-12 col-sm-12'>{this.state.createStationFormVisible === true?
+                                <form onSubmit={this.addManual}>
+                                    {/* onSubmit={this.createStation} */}
+                                    <div className="form-group">
+                                        Product Type
+                                        <select className="form-control"   ref={this.productTypeOfManual} >
+                                            <option  className="dropdown-item" >Choose Type</option>
+                                            <option  className="dropdown-item" key="1" value="instrument">Instrument</option>
+                                            <option  className="dropdown-item" key="2" value="parts">Parts</option>
+                                        </select>                  
+                                    </div>
+                                
+                                    <div className="form-group">
+                                        Product Name
+                                        <input
+                                            name="stationAddress"
+                                            className="form-control"
+                                            type="text"
+                                            autoComplete="none"
+                                            ref={this.productNameoOfManual}
+                                        />
+                                    </div>
+                                    {/* <div className="form-group"> */}
+                                        Upload Manual
+                                        <input
+                                            name="file"
+                                            className="form-control"
+                                            type="file"
+                                            autoComplete="none"
+                                            onChange={this.handleFile}
+                                            ref={this.fileOfManual}
+                                        />
+                                    {/* </div> */}
+                                    <button type="submit" className="btn btn-primary">
+                                        Submit
+                                    </button>
+                                </form>
+                                :''
+                            }</div>
+                            <div className='col-lg-12 col-md-12 col-sm-12'>
                                 <table 
                                     style={{color: "rgba(0, 0, 0, 0.5)"}} 
                                     className="table table-responsive table-borderless"
@@ -190,49 +212,6 @@ import {Link } from 'react-router-dom'
                                     ))}</tbody>
                                 </table>
                             </div>
-
-                            <div className='col-lg-6 col-md-12 col-sm-12'>{this.state.createStationFormVisible === true?
-                                <form onSubmit={this.addManual}>
-                                    {/* onSubmit={this.createStation} */}
-                                    <div className="form-group">
-                                        Product Type
-                                        <select className="form-control"   ref={this.productTypeOfManual} >
-                                            <option  className="dropdown-item" >Choose Type</option>
-                                            <option  className="dropdown-item" key="1" value="instrument">Instrument</option>
-                                            <option  className="dropdown-item" key="2" value="parts">Parts</option>
-                                        </select>                  
-                                    </div>
-                                
-                                    <div className="form-group">
-                                        Product Name
-                                        <input
-                                            name="stationAddress"
-                                            className="form-control"
-                                            type="text"
-                                            autoComplete="none"
-                                            ref={this.productNameoOfManual}
-                                        />
-                                    </div>
-                                    {/* <div className="form-group"> */}
-                                        Upload Manual
-                                        <input
-                                            name="file"
-                                            className="form-control"
-                                            type="file"
-                                            autoComplete="none"
-                                            onChange={this.handleFile}
-                                            ref={this.fileOfManual}
-                                        />
-                                    {/* </div> */}
-                                    <button 
-                                        type="submit"
-                                        className="btn btn-primary"
-                                    >
-                                        Submit
-                                    </button>
-                                </form>
-                                :''
-                            }</div>
                         </div>
                     </Card>
                 </div>

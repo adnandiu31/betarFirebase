@@ -3,11 +3,8 @@ import {base, storage, db} from '../firebase/firebase';
 import { Card, Icon } from 'antd';
 import { Table, Input } from 'antd';
 import { O2A } from 'object-to-array-convert';
-
-import ContentEditable from 'react-contenteditable'
 import {Link} from 'react-router-dom'
 import { setTimeout } from 'timers';
-const { TextArea } = Input;
 
 const columns = [
     { title: 'Repair Id ', dataIndex: 'registerRepairID', key: 'repair_id' },
@@ -16,13 +13,14 @@ const columns = [
     { title: 'Fault Location ', dataIndex: 'registerFaultLocation', key: 'fault_location' },
     { 
         title: 'Fault Location Image', 
-         dataIndex: 'registerFaultLocationImage', 
+        dataIndex: 'registerFaultLocationImage', 
         key: 'fault_location_image', 
         render: (text, record) => <a href={record.registerFaultLocationImage}>Image</a>
     },
     { title: 'Symptom', dataIndex: 'registerSymtom', key: 'registerSymtom' },
-    { title: 'PDF', dataIndex: "", key: 'pdf' },
-  
+    { title: 'PDF', dataIndex: "registerPDF", key: 'registerPDF' ,
+      render: (text, record) => <a>Download</a>
+    },  
     {
       title: 'Action',
       dataIndex: '',
@@ -31,7 +29,7 @@ const columns = [
     },
   ];
 
-  class Manufactures extends Component {
+class Manufactures extends Component {
     constructor(props) {
       super(props);
 
@@ -57,6 +55,7 @@ const columns = [
       this.registerAuthorDesignation = createRef();
       this.registerAuthorMobile = createRef();
       this.registerAuthorEmail = createRef();
+      this.registerPDF = createRef()
     }
     
     componentDidMount() {
@@ -93,7 +92,6 @@ const columns = [
             this.registerAuthorMobile.current.value,
             this.registerAuthorEmail.current.value,
         )
-    
         event.currentTarget.reset();
     };
 
@@ -103,6 +101,7 @@ const columns = [
             registerProductName, 
             registerFaultLocation, 
             registerFaultLocationImage, 
+            // registerPDF,
             registerSymtom,
             registerSolution,
             registerAuthorName,
@@ -122,6 +121,7 @@ const columns = [
                     registerFaultLocation:registerFaultLocation, 
                     registerFaultLocationImage:(this.state.url==null)?0:this.state.url, 
                     registerSymtom:registerSymtom,
+                    registerPDF: "dummy",
                     registerSolution:registerSolution,
                     registerAuthorName:registerAuthorName,
                     registerAuthorStation:registerAuthorStation,  
@@ -221,7 +221,7 @@ const columns = [
                             />
                         }
                     >
-                    <div className='col-lg-6 col-md-12 col-sm-12'>{this.state.createManufactureFormVisible === true?
+                    <div className='col-lg-12 col-md-12 col-sm-12'>{this.state.createManufactureFormVisible === true?
                         <form onSubmit={this.createRegister}>
                             <div className="form-group">
                                 Date
