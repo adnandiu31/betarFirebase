@@ -10,9 +10,9 @@ import {Link } from 'react-router-dom'
       this.state={
           stations: null,
           createStationFormVisible: false,
-          manual: null,
+          manualss: null,
           pdf: null,
-          url: ""
+          url: null
       }
 
       this.productTypeOfManual = createRef();
@@ -25,20 +25,35 @@ import {Link } from 'react-router-dom'
         context: this,
         state: "stations"
       });
+
+      this.ref = base.syncState(`manualss`,{
+          context: this, 
+          state: "manualss"
+      })
     }
 
-    addManual = event => {
+    createManual = event => {
         event.preventDefault();
         this.addFileToStorage(this.state.pdf)
         console.log(this.productTypeOfManual.current.value, this.productNameoOfManual.current.value)
-    //   this.addStation(this.stationNameRef.current.value, this.stationAddressRef.current.value);
+      this.addManual(this.productNameoOfManual.current.value, this.productTypeOfManual.current.value);
       event.currentTarget.reset();
     };
 
-    addStation = (name, address) => {
-        const stations = { ...this.state.stations };
-        stations[`${name}`] =  {'Address': address};
-        this.setState({ stations });
+    addManual = (productNameoOfManual, productTypeOfManual) => {
+        const manuals = { ...this.state.manuals };
+        setTimeout(()=>{
+            manuals[`${productNameoOfManual}`] =  {
+                productNameoOfManual, 
+                productTypeOfManual,
+                fileOfManual: "(this.state.url==null)?0:this.state.url"
+            };
+        }, 9000)
+        setTimeout(()=>{
+            this.setState({ manuals : manuals});
+            console.log("process donee")
+        }, 5000)
+
     };
 
     addFileToStorage = ( file) => {
@@ -123,7 +138,7 @@ import {Link } from 'react-router-dom'
                     
                         <div style={{float: 'center'}} className='row'>
                             <div className='col-lg-8 col-md-12 col-sm-12'>{this.state.createStationFormVisible === true?
-                                <form onSubmit={this.addManual}>
+                                <form onSubmit={this.createManual}>
                                     {/* onSubmit={this.createStation} */}
                                     <div className="form-group">
                                         Product Type
