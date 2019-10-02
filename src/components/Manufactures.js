@@ -1,37 +1,38 @@
 import React, {Component, createRef} from 'react';
 import {base, storage, db} from '../firebase/firebase';
-import { Card, Icon } from 'antd';
-import { Table, Input } from 'antd';
+import { Card, Icon, Popconfirm, Table } from 'antd';
 import { O2A } from 'object-to-array-convert';
 import {Link} from 'react-router-dom'
 import { setTimeout } from 'timers';
 
-const columns = [
-    { title: 'Repair Id ', dataIndex: 'registerRepairID', key: 'repair_id' },
-    { title: 'Date', dataIndex: 'registerDate', key: 'date' },
-    { title: 'Product Name', dataIndex: 'registerProductName', key: 'product_name' },
-    { title: 'Fault Location ', dataIndex: 'registerFaultLocation', key: 'fault_location' },
-    { 
-        title: 'Fault Location Image', 
-        dataIndex: 'registerFaultLocationImage', 
-        key: 'fault_location_image', 
-        render: (text, record) => <a href={record.registerFaultLocationImage}>Image</a>
-    },
-    { title: 'Symptom', dataIndex: 'registerSymtom', key: 'registerSymtom' },
-    { title: 'PDF', dataIndex: "registerPDF", key: 'registerPDF' ,
-      render: (text, record) => <a>Download</a>
-    },  
-    {
-      title: 'Action',
-      dataIndex: '',
-      key: 'x',
-      render: () => <a>Delete</a>,
-    },
-  ];
-
 class Manufactures extends Component {
     constructor(props) {
       super(props);
+      this.columns = [
+        { title: 'Repair Id ', dataIndex: 'registerRepairID', key: 'repair_id' },
+        { title: 'Date', dataIndex: 'registerDate', key: 'date' },
+        { title: 'Product Name', dataIndex: 'registerProductName', key: 'product_name' },
+        { title: 'Fault Location ', dataIndex: 'registerFaultLocation', key: 'fault_location' },
+        { 
+            title: 'Fault Location Image', 
+            dataIndex: 'registerFaultLocationImage', 
+            key: 'fault_location_image', 
+            render: (text, record) => <a href={record.registerFaultLocationImage}>Image</a>
+        },
+        { title: 'Symptom', dataIndex: 'registerSymtom', key: 'registerSymtom' },
+        { title: 'PDF', dataIndex: "registerPDF", key: 'registerPDF' ,
+          render: (text, record) => <a>Download</a>
+        },  
+        {
+          title: 'Action',
+          dataIndex: '',
+          key: 'x',
+          render: (text, record) => 
+          <Popconfirm title="Sure to delete?" onConfirm={() => this.deleteRegister(record.registerRepairID)}>
+          <a>Delete</a>
+        </Popconfirm>,
+        },
+      ]; 
 
       this.state={
           register: null,
@@ -161,12 +162,13 @@ class Manufactures extends Component {
         )
     }
 
-    deleteManufacture = name => {
-      const manufactures = {...this.state.manufactures}
-      console.log(manufactures[`${name}`])
-      manufactures[`${name}`] = null;
-      this.setState({manufactures})
-    }
+    deleteRegister = id => {
+        console.log(id)
+      const register = {...this.state.register}
+    //   console.log(manufactures[`${name}`])
+      register[`${id}`] = null;
+      this.setState({register})
+    }   
 
     updateManufactureCountry = (name, country) => {
       const manufactures = {...this.state.manufactures}
@@ -318,7 +320,7 @@ class Manufactures extends Component {
                     <div style={{float: 'center'}} className='row'>
                         <div className='col-lg-12 col-md-12 col-sm-12'>
                             <Table
-                                columns={columns}
+                                columns={this.columns}
                                 expandedRowRender=
                                     {record => 
                                         <p style={{ margin: 0 }}>
