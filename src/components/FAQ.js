@@ -1,37 +1,42 @@
 import React, {Component, createRef} from 'react';
-import {base, storage} from './../firebase/firebase';
-import { Card, Icon } from 'antd';
+import {base, db} from './../firebase/firebase';
+import { Card, Icon, Popconfirm } from 'antd';
 import ContentEditable from 'react-contenteditable'
 import {Link } from 'react-router-dom'
 import { Table } from 'antd'
-
-const columns = [
-        { title: 'FAQ ', dataIndex: 'faq_question', key: 'faq_question' },
-        // { title: 'Repair Id ', dataIndex: 'faq_ans', key: 'faq_ans' },
-    ]
-
-const data = [
-        {
-        key: 1,
-        faq_question: 'What is the Procedure to assemble transmitter??',
-        faq_ans: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
-        },
-    ]
+import { O2A } from 'object-to-array-convert';
 
 class FAQ extends Component {
     constructor(props) {
       super(props);
-
+      this.columns = [
+        { title: 'FAQ ', dataIndex: 'faqQuestion', key: 'faqQuestion' },
+        {
+            title: 'Action',        
+            dataIndex: '',
+            key: 'x',
+            render: (text, record) =>
+          //   this.state.manuals.length >= 1 ? (
+              <Popconfirm title="Sure to delete?" onConfirm={() => this.deleteFAQ(text.faqID)}>
+                <a>Delete</a>
+                
+              </Popconfirm>
+          //   ) : null,
+          },
+        ]
       this.state={
           stations: null,
+          faq: null,
           createStationFormVisible: false,
           pdf: null,
-          url: ""
+          url: "",
+          deleteOptionVisible: false,
+          tableData: null
       }
 
       this.faqQuestion = createRef();
       this.faqAnswer = createRef();
-      this.fileOfManual = createRef();
+      this.faqID = createRef();
     }
     
     componentDidMount() {
@@ -39,47 +44,34 @@ class FAQ extends Component {
         context: this,
         state: "stations"
       });
+      this.ref = base.syncState(`faq`,{
+          context: this,
+          state: "faq"
+      });
+      db.ref('/faq').on('value', (data)=>{
+        const value = O2A(data)
+        this.setState({tableData: value})        
+        })
     }
 
-    addManual = event => {
-        event.preventDefault();
-        this.addFileToStorage(this.state.pdf)
-    //   this.addStation(this.stationNameRef.current.value, this.stationAddressRef.current.value);
-      event.currentTarget.reset();
+    createFAQ = event => {
+        // event.preventDefault();
+        this.addFAQ( this.faqQuestion.current.value, this.faqAnswer.current.value )
+        event.currentTarget.reset();
     };
 
-    addFileToStorage = (file) => {
-        const uploadTask = storage.ref(`manuals/${file.name}`).put(file)
-        uploadTask.on('state_changed',
-            (snapshot)=>{},
-            (error)=>{
-                console.log(error)
-            },
-            ()=>{
-                storage.ref('manuals').child(file.name).getDownloadURL().then(url=>{
-                    console.log(url)
-                })
-            }
-        )
-    }
-
-    handleFile = e => {
-        if(e.target.files[0]){
-            const pdf = e.target.files[0]
-            this.setState({pdf})
-        }
-    }
-
-    addStation = (name, address) => {
-      const stations = { ...this.state.stations };
-      stations[`${name}`] =  {'Address': address};
-      this.setState({ stations });
+    addFAQ = (faqQuestion, faqAnswer) => {
+      const faq = { ...this.state.faq };
+      const id = parseInt(Object.keys(this.state.faq)[Object.keys(this.state.faq).length-1])+1
+      faq[id] =  {faqID:id,faqQuestion,faqAnswer};
+      this.setState({ faq });
     };
 
-    deleteStation = name => {
-      const stations = {...this.state.stations}
-      stations[`${name}`] = null;
-      this.setState({stations})
+    deleteFAQ = name => {
+        console.log("delete FAQ function" + name)
+      const faq = {...this.state.faq}
+      faq[`${name}`] = null;
+      this.setState({faq})
     }
 
     updateStationAddress = (name, address) => {
@@ -91,6 +83,7 @@ class FAQ extends Component {
     createStationFormShow = () => this.setState({createStationFormVisible:!this.state.createStationFormVisible})
   
     render() {
+        const data = this.state.tableData
         return  (
             <>
             <div className="top-nav" style={{ background:'#007bff', position: 'sticky', top: 0, zIndex: 100}} >
@@ -112,7 +105,7 @@ class FAQ extends Component {
               </li>              
             </ul>
           </div>
-            {this.state.stations?
+            {this.state.faq?
                 <div id="stations" style={{width: '100%', padding: "0 25px"}} >        
                     <Card style={{margin: '2px'}} title={<span style={{color:'rgb(0, 75, 222)'}}>FAQ List</span>}
                         extra={
@@ -130,9 +123,7 @@ class FAQ extends Component {
                     
                         <div style={{float: 'center'}} className='row'>
                             <div className='col-lg-6 col-md-12 col-sm-12'>{this.state.createStationFormVisible === true?
-                                <form onSubmit={this.addManual}>
-                                    {/* onSubmit={this.createStation} */}
-                                    
+                                <form onSubmit={this.createFAQ}>                                    
                                     <div className="form-group">
                                         Question
                                         <input
@@ -160,11 +151,11 @@ class FAQ extends Component {
                                 :''
                             }</div>
                             <div className='col-lg-12 col-md-12 col-sm-12'>
-                                <Table columns={columns} 
+                                <Table columns={this.columns} 
                                         expandedRowRender={
                                                 record => 
                                                 <p>
-                                                {record.faq_ans}
+                                                {record.faqAnswer}
                                                 </p> 
                                                 }  
                                         dataSource={data} />
