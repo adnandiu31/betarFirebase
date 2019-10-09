@@ -49,7 +49,10 @@ class App extends Component {
             <Route exact path="/dashboard" component={() => <Consumer>
               {
                 ({ state }) => state.currentUser?
+                <>
+                  {console.log(state.currentUser)}
                   <Dashboard user={state.currentUser} /> 
+                </>
                   :<div style={{display: "flex",  
                     alignItems: "center",
                     justifyContent: "center",
