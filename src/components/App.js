@@ -51,7 +51,7 @@ class App extends Component {
                 ({ state }) => state.currentUser?
                 <>
                   {console.log(state.currentUser)}
-                  <Dashboard user={state.currentUser} /> 
+                  {/* <Dashboard user={state.currentUser} />  */}
                 </>
                   :<div style={{display: "flex",  
                     alignItems: "center",

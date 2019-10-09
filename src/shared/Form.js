@@ -32,12 +32,13 @@ import React, {
         password,
         props: { action }
       } = this;
-  
-      auth.userSession(
-        action,
-        email.current.value,
-        password.current.value
-      ).then(this.handleSuccess).catch(this.handleErrors);
+      console.log(auth)
+      // this.handleSuccess()
+      // auth.userSession(
+      //   action,
+      //   email.current.value,
+      //   password.current.value
+      // ).then(this.handleSuccess).catch(this.handleErrors);
     }
   
     resetForm() {
