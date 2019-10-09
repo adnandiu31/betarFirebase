@@ -3,8 +3,9 @@ import React, {
     createRef
   } from 'react';
   import PropTypes from 'prop-types';
-  import { auth, app } from '../firebase/firebase';
-  
+  import { auth, app, db } from '../firebase/firebase';
+  import { O2A } from 'object-to-array-convert';
+
   class Form extends Component {
     constructor(props) {
       super(props);
@@ -25,7 +26,11 @@ import React, {
       this.props.onError && this.props.onError(reason);
     }
     componentDidMount(){
-      console.log(app.database().ref().child('manual-list'))
+      db.ref('/users').on('value', (data)=>{
+        const value = O2A(data)
+        console.log(value)
+      })
+      
     }
   
     handleSubmit(event) {

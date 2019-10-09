@@ -48,7 +48,7 @@ class App extends Component {
             <Route exact path="/signup" component={() => <Signup />} />
             <Route exact path="/dashboard" component={() => <Consumer>
               {
-                ({ state }) => state.currentUser?
+                ({ state }) => !state.currentUser?
                 <>
                   {console.log(state.currentUser)}
                   {/* <Dashboard user={state.currentUser} />  */}
