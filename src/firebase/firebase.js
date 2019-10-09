@@ -8,5 +8,6 @@ const auth = app.auth();
 
 export {
   auth,
-  base
+  base,
+  app
 }

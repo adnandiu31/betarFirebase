@@ -3,7 +3,7 @@ import React, {
     createRef
   } from 'react';
   import PropTypes from 'prop-types';
-  import { auth } from '../firebase';
+  import { auth, app } from '../firebase/firebase';
   
   class Form extends Component {
     constructor(props) {
@@ -24,6 +24,9 @@ import React, {
     handleErrors(reason) {
       this.props.onError && this.props.onError(reason);
     }
+    componentDidMount(){
+      console.log(app.database().ref().child('manual-list'))
+    }
   
     handleSubmit(event) {
       event.preventDefault();
@@ -32,7 +35,15 @@ import React, {
         password,
         props: { action }
       } = this;
-      console.log(auth)
+      // app.database().ref('users').on('value', (data)=>{
+      //   const value = O2A(data)
+      //   // console.log(value)
+      //   this.setState({user: value})
+      // })
+      // app.database().ref('users/').on('value',(dataa)=> {
+      //   console.log("Object.keys(dataa)")
+      // })
+     
       // this.handleSuccess()
       // auth.userSession(
       //   action,
