@@ -1,5 +1,5 @@
 import React, {Component, createRef} from 'react';
-import {base, storage, db} from './../firebase/firebase';
+import {base, storage, db} from '../firebase/firebase';
 import { Card, Icon, Popconfirm } from 'antd';
 import ContentEditable from 'react-contenteditable'
 import { O2A } from 'object-to-array-convert';
@@ -152,7 +152,12 @@ import {Table} from 'antd'
                 <Link to="/FAQ">
                   <a style={{color: 'black'}} className="nav-link" >FAQ</a>
                 </Link>
-              </li>              
+              </li>  
+              <li className="nav-item">
+                <Link to="/discussion-forum">
+                  <a style={{color: 'black'}} className="nav-link" >Discussion Forum</a>
+                </Link>
+              </li>             
             </ul>
           </div>
             {this.state.stations?

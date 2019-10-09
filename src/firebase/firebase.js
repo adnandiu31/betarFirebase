@@ -12,5 +12,6 @@ export {
   auth,
   base, 
   storage,
-  db
+  db,
+  app
 }

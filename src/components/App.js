@@ -17,10 +17,11 @@ import Dashboard from './Dashboard';
 
 import Navbar from '../components/Navbar';
 import Header from '../components/Header';
-import Manufactures from '../components/Manufactures'
+import Register from '../components/Register'
 import FlashMessage from '../components/FlashMessage';
-import ManualList from '../components/Stations';
+import ManualList from './Manual';
 import FAQ from '../components/FAQ'
+import DiscussionForum from './../components/DiscussionForum'
 class App extends Component {
   constructor(props){
     super(props)
@@ -50,7 +51,7 @@ class App extends Component {
             <Route exact path="/signup" component={() => <Signup />} />
             <Route exact path="/dashboard" component={() => <Consumer>
               {
-                ({ state }) => state.currentUser?
+                ({ state }) => true?
                   // <Dashboard user={state.currentUser} /> 
                   <FAQ />
                   :<div style={{display: "flex",  
@@ -75,8 +76,9 @@ class App extends Component {
               <h1 className="content">Account created. <Link to="/login">
               Proceed to Dashboard</Link></h1>} />
             <Route exact path="/FAQ" component={FAQ}  />
-            <Route exact path="/register" component={Manufactures} />
+            <Route exact path="/register" component={Register} />
             <Route exact path="/manual-list" component={ManualList} />
+            <Route exact path="/discussion-forum" component={DiscussionForum} />
           </Fragment>
         </Router>
       </AppProvider>

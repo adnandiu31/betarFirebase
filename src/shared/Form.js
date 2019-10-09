@@ -3,8 +3,9 @@ import React, {
     createRef
   } from 'react';
   import PropTypes from 'prop-types';
-  import { auth } from '../firebase';
-  
+  import { app } from '../firebase/firebase';
+  import { O2A } from 'object-to-array-convert';
+
   class Form extends Component {
     constructor(props) {
       super(props);
@@ -15,29 +16,49 @@ import React, {
       this.handleErrors = this.handleErrors.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    state = {
+      user:{}
+    }
+
   
     handleSuccess() {
       this.resetForm();
       this.props.onSuccess && this.props.onSuccess();
+      console.log(this.props.onSuccess)
     }
   
     handleErrors(reason) {
       this.props.onError && this.props.onError(reason);
     }
-  
+  componentDidMount(){
+    app.database().ref('users').on('value', (data)=>{
+      const value = O2A(data)
+      // console.log(value)
+      this.setState({user: value})
+    })
+  }
     handleSubmit(event) {
       event.preventDefault();
-      const {
-        email,
-        password,
-        props: { action }
-      } = this;
-  
-      auth.userSession(
-        action,
-        email.current.value,
-        password.current.value
-      ).then(this.handleSuccess).catch(this.handleErrors);
+     
+      // const _this = this
+
+    //   app.database().ref('users').once('value').then(function(snapshot){
+    //       _this.setState({user:snapshot.val() || 'Anonymous'});
+    //       var len = Object.keys(snapshot).length;
+    //       for(let i=0; i<Object.keys(snapshot.val()).length; i++){
+    //         console.log(snapshot.val());
+    //       }
+    // });
+      // console.log(event.target.name.value)
+      
+      this.handleSuccess()
+     
+    //   auth.userSession(
+    //     action,
+    //     email.current.value,
+    //     password.current.value
+    //   ).then(this.handleSuccess).catch(this.handleErrors);
     }
   
     resetForm() {

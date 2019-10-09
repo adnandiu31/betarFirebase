@@ -1,12 +1,12 @@
 import React, {Component, createRef} from 'react';
 import {base, db} from './../firebase/firebase';
-import { Card, Icon, Popconfirm } from 'antd';
+import { Card, Icon, Popconfirm, Table, Button } from 'antd';
 import ContentEditable from 'react-contenteditable'
 import {Link } from 'react-router-dom'
-import { Table } from 'antd'
+import {  } from 'antd'
 import { O2A } from 'object-to-array-convert';
 
-class FAQ extends Component {
+class DiscussionForum extends Component {
     constructor(props) {
       super(props);
       this.columns = [
@@ -56,14 +56,14 @@ class FAQ extends Component {
 
     createFAQ = event => {
         // event.preventDefault();
-        this.addFAQ( this.faqQuestion.current.value, this.faqAnswer.current.value )
+        this.addFAQ( this.faqQuestion.current.value)
         event.currentTarget.reset();
     };
 
-    addFAQ = (faqQuestion, faqAnswer) => {
+    addFAQ = (faqQuestion) => {
       const faq = { ...this.state.faq };
       const id = parseInt(Object.keys(this.state.faq)[Object.keys(this.state.faq).length-1])+1
-      faq[id] =  {faqID:id,faqQuestion,faqAnswer};
+      faq[id] =  {faqID:id,faqQuestion};
       this.setState({ faq });
     };
 
@@ -74,6 +74,27 @@ class FAQ extends Component {
       this.setState({faq})
     }
 
+    addComment = () => {
+      console.log("ad Commnet")
+    }
+
+    addAnswer = ans => <>
+          {console.log("dafskjb")}
+            <div>
+                {
+                  ans.faqAnswer.map(
+                  (ans)=>{
+                    return <p>{ans}
+                    {console.log(ans + "checking")}
+                    </p>
+                  }
+                  )
+                }
+              <Button title="Add Comment"  onClick={this.addComment} />
+              
+            </div> 
+          </>
+    
     updateStationAddress = (name, address) => {
       const stations = {...this.state.stations}
       stations[`${name}`] = {Address: address};
@@ -102,12 +123,12 @@ class FAQ extends Component {
                 <Link to="/FAQ">
                   <a style={{color: 'black'}} className="nav-link" >FAQ</a>
                 </Link>
-              </li> 
+              </li>  
               <li className="nav-item">
                 <Link to="/discussion-forum">
                   <a style={{color: 'black'}} className="nav-link" >Discussion Forum</a>
                 </Link>
-              </li>              
+              </li>             
             </ul>
           </div>
             {this.state.faq?
@@ -139,16 +160,6 @@ class FAQ extends Component {
                                             ref={this.faqQuestion}
                                         />
                                     </div>
-                                    <div className="form-group">
-                                        Answer
-                                        <input
-                                            name="faqAnswer"
-                                            className="form-control"
-                                            type="text"
-                                            autoComplete="none"
-                                            ref={this.faqAnswer}
-                                        />
-                                    </div>
                                     <button type="submit" className="btn btn-primary" >
                                         Submit
                                     </button>
@@ -158,12 +169,16 @@ class FAQ extends Component {
                             <div className='col-lg-12 col-md-12 col-sm-12'>
                                 <Table columns={this.columns} 
                                         expandedRowRender={
-                                                record => 
-                                                <p>
-                                                {record.faqAnswer}
-                                                </p> 
+                                                this.addAnswer
                                                 }  
                                         dataSource={data} />
+                                        {/* record => 
+                                                <div>
+                                                <p>
+                                                  {record.faqAnswer}
+                                                </p> 
+                                                <h3>ndfjkf</h3>
+                                                </div> */}
                             </div>
                         </div>
                     </Card>
@@ -175,4 +190,4 @@ class FAQ extends Component {
 }
 
 
-export default FAQ
+export default DiscussionForum

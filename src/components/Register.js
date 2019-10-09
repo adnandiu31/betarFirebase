@@ -5,7 +5,7 @@ import { O2A } from 'object-to-array-convert';
 import {Link} from 'react-router-dom'
 import { setTimeout } from 'timers';
 
-class Manufactures extends Component {
+class Register extends Component {
     constructor(props) {
       super(props);
       this.columns = [
@@ -208,7 +208,12 @@ class Manufactures extends Component {
                         <Link to="/FAQ">
                         <a style={{color: 'black'}} className="nav-link" >FAQ</a>
                         </Link>
-                    </li>              
+                    </li>   
+                    <li className="nav-item">
+                        <Link to="/discussion-forum">
+                        <a style={{color: 'black'}} className="nav-link" >Discussion Forum</a>
+                        </Link>
+                    </li>            
                 </ul>
             </div>
             {this.state.register?
@@ -348,4 +353,4 @@ class Manufactures extends Component {
     }
 }
 
-export default Manufactures
+export default Register

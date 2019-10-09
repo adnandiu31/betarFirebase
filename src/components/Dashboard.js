@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {base} from '../firebase/firebase';
-import Stations from './Stations';
-import Manufactures from './Manufactures';
+import Stations from './Manual';
+import Register from './Register';
 import FAQ from './FAQ'
 import {Link} from 'react-router-dom'
 
@@ -170,7 +170,7 @@ import {Link} from 'react-router-dom'
           <div className="main">
             
             <Stations />
-            <Manufactures />
+            <Register />
            
            
           </div>
