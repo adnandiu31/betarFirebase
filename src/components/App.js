@@ -49,7 +49,7 @@ class App extends Component {
             } />
             <Route exact path="/login" component={() => <Login />} />
             <Route exact path="/signup" component={() => <Signup />} />
-            <Route exact path="/dashboard" component={() => <Consumer>
+            {/* <Route exact path="/dashboard" component={() => <Consumer>
               {
                 ({ state }) => true?
                   // <Dashboard user={state.currentUser} /> 
@@ -69,7 +69,7 @@ class App extends Component {
                     </div>
                   </div>
               }
-            </Consumer>} />
+            </Consumer>} /> */}
             <Route exact path="/signedOut" component={() => 
               <h1 className="content">You're now signed out.</h1>} />
             <Route exact path="/accountCreated" component={() => 
