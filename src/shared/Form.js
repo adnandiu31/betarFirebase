@@ -3,7 +3,7 @@ import React, {
     createRef
   } from 'react';
   import PropTypes from 'prop-types';
-  import { app } from '../firebase/firebase';
+  import { auth, app, db } from '../firebase/firebase';
   import { O2A } from 'object-to-array-convert';
 
   class Form extends Component {
@@ -31,6 +31,7 @@ import React, {
     handleErrors(reason) {
       this.props.onError && this.props.onError(reason);
     }
+
   componentDidMount(){
     app.database().ref('users').on('value', (data)=>{
       const value = O2A(data)
@@ -38,27 +39,30 @@ import React, {
       this.setState({user: value})
     })
   }
+    
+  
     handleSubmit(event) {
       event.preventDefault();
+      const {
+        email,
+        password,
+        props: { action }
+      } = this;
+      // app.database().ref('users').on('value', (data)=>{
+      //   const value = O2A(data)
+      //   // console.log(value)
+      //   this.setState({user: value})
+      // })
+      // app.database().ref('users/').on('value',(dataa)=> {
+      //   console.log("Object.keys(dataa)")
+      // })
      
-      // const _this = this
-
-    //   app.database().ref('users').once('value').then(function(snapshot){
-    //       _this.setState({user:snapshot.val() || 'Anonymous'});
-    //       var len = Object.keys(snapshot).length;
-    //       for(let i=0; i<Object.keys(snapshot.val()).length; i++){
-    //         console.log(snapshot.val());
-    //       }
-    // });
-      // console.log(event.target.name.value)
-      
       this.handleSuccess()
-     
-    //   auth.userSession(
-    //     action,
-    //     email.current.value,
-    //     password.current.value
-    //   ).then(this.handleSuccess).catch(this.handleErrors);
+      // auth.userSession(
+      //   action,
+      //   email.current.value,
+      //   password.current.value
+      // ).then(this.handleSuccess).catch(this.handleErrors);
     }
   
     resetForm() {

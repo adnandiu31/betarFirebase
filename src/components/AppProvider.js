@@ -16,6 +16,7 @@ import React, {
     }
   
     componentDidMount() {
+      
       firebase.auth.onAuthStateChanged(user => 
           user && this.setState({
           currentUser: user

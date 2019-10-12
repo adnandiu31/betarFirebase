@@ -9,12 +9,10 @@ import {
 } from 'react-router-dom';
 
 import AppProvider, {
-  Consumer
+  // Consumer
 } from './AppProvider';
 import Login from './Login';
 import Signup from './Signup';
-import Dashboard from './Dashboard';
-
 import Navbar from '../components/Navbar';
 import Header from '../components/Header';
 import Register from '../components/Register'

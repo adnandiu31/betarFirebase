@@ -111,7 +111,8 @@ class Intents extends Component {
                                         <tr 
                                             key={key} 
                                             style={{border: "1px solid rgba(0, 0, 0, 0.1)"}}
-                                        >{console.log(key)}
+                                        >
+                                        {/* {console.log(key)} */}
                                             <td key={key}>
                                                 <input
                                                     key={key}

@@ -1,51 +1,52 @@
 import React, {Component, createRef} from 'react';
 import {base, storage, db} from '../firebase/firebase';
-import { Card, Icon, Popconfirm } from 'antd';
-import ContentEditable from 'react-contenteditable'
+import { Card, Icon, Popconfirm, Table, Input, Button } from 'antd';
 import { O2A } from 'object-to-array-convert';
 import {Link } from 'react-router-dom'
-import {Table} from 'antd'
-
-
+import Highlighter from 'react-highlight-words';
 
   class Stations extends Component {
     constructor(props) {
       super(props);
+      this.state={
+        stations: null,
+        createStationFormVisible: false,
+        manuals: null,
+        pdf: null,
+        url: null,
+        progress:null,
+        tableData: null,
+        searchText: '',
+        actionVisible: false
+    }
       this.columns = [
-        { title: 'Product Type', dataIndex: 'productTypeOfManual', key: 'productTypeOfManual' },
-        { title: 'Product Name', dataIndex: 'productNameoOfManual', key: 'productNameoOfManual' },
+        { title: 'Product Type', dataIndex: 'productTypeOfManual', key: 'productTypeOfManual', ...this.getColumnSearchProps('productTypeOfManual') },
+        { title: 'Product Name', dataIndex: 'productNameoOfManual', key: 'productNameoOfManual', ...this.getColumnSearchProps('productNameoOfManual') },
+        { title: 'Model', dataIndex: 'productModelOfManual', key: 'productModelOfManual', ...this.getColumnSearchProps('productModelOfManual') },
         
         { title: 'PDF', dataIndex: "registerPDF", key: 'registerPDF' ,
           render: (text, record) =>
-                         <a href={record.fileOfManual} target="_blank">
+                         <a href={record.fileOfManual} target="_blank" rel="noopener noreferrer">
                              Download
                          </a>
-        },  
+        }, 
+        
+        (this.state.actionVisible)?
         {
           title: 'Action',
           dataIndex: '',
           key: 'x',
           render: (text, record) =>
-        //   this.state.manuals.length >= 1 ? (
             <Popconfirm title="Sure to delete?" onConfirm={() => this.deleteStation(record.productNameoOfManual)}>
-              <a>Delete</a>
+              <a href={() => this.deleteStation(record.productNameoOfManual)}>Delete</a>
             </Popconfirm>
-        //   ) : null,
-        },
+        }:{}
       ];  
-      this.state={
-          stations: null,
-          createStationFormVisible: false,
-          manuals: null,
-          pdf: null,
-          url: null,
-          progress:null,
-          tableData: null
-      }
-
+      
       this.productTypeOfManual = createRef();
       this.productNameoOfManual = createRef();
       this.fileOfManual = createRef();
+      this.productModelOfManual = createRef();
     }
     
     componentDidMount() {
@@ -71,17 +72,18 @@ import {Table} from 'antd'
         setTimeout(()=>{
             console.log(this.state.progress)
         }, 2000)        
-      this.addManual(this.productNameoOfManual.current.value, this.productTypeOfManual.current.value);
+      this.addManual(this.productNameoOfManual.current.value, this.productTypeOfManual.current.value, this.productModelOfManual.current.value);
       event.currentTarget.reset();
     };
 
-    addManual = (productNameoOfManual, productTypeOfManual) => {
+    addManual = (productNameoOfManual, productTypeOfManual, productModelOfManual) => {
         const manuals = { ...this.state.manuals };
         console.log(manuals)
         setTimeout(()=>{
             manuals[`${productNameoOfManual}`] =  {
                 productNameoOfManual, 
                 productTypeOfManual,
+                productModelOfManual,
                 fileOfManual: (this.state.url==null)?0:this.state.url
             }
         }, 5000)
@@ -131,6 +133,68 @@ import {Table} from 'antd'
     }
 
     createStationFormShow = () => this.setState({createStationFormVisible:!this.state.createStationFormVisible})
+
+    getColumnSearchProps = dataIndex => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+          <div style={{ padding: 8 }}>
+            <Input
+              ref={node => {
+                this.searchInput = node;
+              }}
+              placeholder={`Search ${dataIndex}`}
+              value={selectedKeys[0]}
+              onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+              onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+              style={{ width: 188, marginBottom: 8, display: 'block' }}
+            />
+            <Button
+              type="primary"
+              onClick={() => this.handleSearch(selectedKeys, confirm)}
+              icon="search"
+              size="small"
+              style={{ width: 90, marginRight: 8 }}
+            >
+              Search
+            </Button>
+            <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+              Reset
+            </Button>
+          </div>
+        ),
+        filterIcon: filtered => (
+          <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
+        ),
+        onFilter: (value, record) =>
+          record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: visible => {
+          if (visible) {
+            setTimeout(() => this.searchInput.select());
+          }
+        },
+        // render: text => (
+        //   <Highlighter
+        //     highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+        //     searchWords={[this.state.searchText]}
+        //     autoEscape
+        //     textToHighlight={
+        //         text.toString()
+        //     }
+        //   />
+        // ),
+      });
+    
+      handleSearch = (selectedKeys, confirm) => {
+        confirm();
+        this.setState({ searchText: selectedKeys[0] });
+      };
+    
+      handleReset = clearFilters => {
+        clearFilters();
+        this.setState({ searchText: '' });
+      };
   
     render() {
         const data = this.state.tableData
@@ -139,23 +203,23 @@ import {Table} from 'antd'
             <div className="top-nav" style={{ background:'#007bff',position: 'sticky',top: 0,zIndex: 100}} >
             <ul className="nav nav-tabs">
               <li className="nav-item">
-                <Link to="/manual-list" >
-                    <a style={{color: 'black'}} className="nav-link" >Manual List</a>                
+                <Link to="/manual-list" style={{color: 'black'}} className="nav-link">
+                    Manual List              
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/register">
-                  <a style={{color: 'black'}} className="nav-link" >Trouble Shooting Register</a>
+                <Link to="/register" style={{color: 'black'}} className="nav-link">
+                  Trouble Shooting Register
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link to="/FAQ">
-                  <a style={{color: 'black'}} className="nav-link" >FAQ</a>
+              <li className="nav-item" >
+                <Link to="/FAQ" style={{color: 'black'}} className="nav-link">
+                  FAQ
                 </Link>
               </li>  
-              <li className="nav-item">
-                <Link to="/discussion-forum">
-                  <a style={{color: 'black'}} className="nav-link" >Discussion Forum</a>
+              <li className="nav-item" >
+                <Link to="/discussion-forum" style={{color: 'black'}} className="nav-link">
+                  Discussion Forum
                 </Link>
               </li>             
             </ul>
@@ -195,11 +259,21 @@ import {Table} from 'antd'
                                     <div className="form-group">
                                         Product Name
                                         <input
-                                            name="stationAddress"
+                                            name="productNameoOfManual"
                                             className="form-control"
                                             type="text"
                                             autoComplete="none"
                                             ref={this.productNameoOfManual}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        Model
+                                        <input
+                                            name="productModelOfManual"
+                                            className="form-control"
+                                            type="text"
+                                            autoComplete="none"
+                                            ref={this.productModelOfManual}
                                         />
                                     </div>
                                     {/* <div className="form-group"> */}
