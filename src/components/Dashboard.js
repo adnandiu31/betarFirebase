@@ -19,11 +19,11 @@ import Users from './Users'
       }
     }
     componentDidMount(){
-      this.ref = base.syncState(`users/${this.props.user.uid}`, {
+      this.ref = base.syncState(`users/${this.props.user}`, {
         context: this,
         state: "userInfo",
       });
-      this.ref = base.syncState(`users/${this.props.user.uid}/intents`,{
+      this.ref = base.syncState(`users/${this.props.user}/intents`,{
         context: this,
         state: "intentBundle"
       })
@@ -187,7 +187,7 @@ import Users from './Users'
             <Stations />
             <Manufactures />
             <Products />
-            <Intents 
+            {/* <Intents 
               userInfo={this.state.userInfo}
               intentBundle={this.state.intentBundle}
               
@@ -204,7 +204,7 @@ import Users from './Users'
               createIntentBundle = {this.createIntentBundle}
               deleteIndent = {this.deleteIndent}
               indentApproval = {this.indentApproval}    
-            />
+            /> */}
             <SRB />
             <SIB />
             <Ledger />

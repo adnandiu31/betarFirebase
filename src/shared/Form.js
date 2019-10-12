@@ -49,7 +49,7 @@ import React, {
       //   console.log("Object.keys(dataa)")
       // })
      
-      // this.handleSuccess()
+      this.handleSuccess()
       // auth.userSession(
       //   action,
       //   email.current.value,

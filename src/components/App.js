@@ -48,10 +48,10 @@ class App extends Component {
             <Route exact path="/signup" component={() => <Signup />} />
             <Route exact path="/dashboard" component={() => <Consumer>
               {
-                ({ state }) => !state.currentUser?
+                ({ state }) => true?
                 <>
-                  {console.log(state.currentUser)}
-                  {/* <Dashboard user={state.currentUser} />  */}
+                  {/* {console.log(state.currentUser)} */}
+                  <Dashboard user="1HKVWs1Uo9VCDbPg1Mj4YRjmk8" /> 
                 </>
                   :<div style={{display: "flex",  
                     alignItems: "center",
