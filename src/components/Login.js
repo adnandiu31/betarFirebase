@@ -11,7 +11,7 @@ const Login = props => <Consumer>
         <Form
           action="signIn"
           title="Login"
-          onSuccess={() => props.history.push('/dashboard')}
+          onSuccess={() => props.history.push('/FAQ')}
           onError={({ message }) => context.setMessage(`Login failed: ${message}`)}
         />
       </Card>

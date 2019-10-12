@@ -169,7 +169,7 @@ import {Link} from 'react-router-dom'
           </div>
           <div className="main">
             
-            <Stations />
+            {/* <Stations /> */}
             <Register />
            
            

@@ -48,21 +48,26 @@ import React, {
         password,
         props: { action }
       } = this;
-      // app.database().ref('users').on('value', (data)=>{
-      //   const value = O2A(data)
-      //   // console.log(value)
-      //   this.setState({user: value})
-      // })
-      // app.database().ref('users/').on('value',(dataa)=> {
-      //   console.log("Object.keys(dataa)")
-      // })
      
-      this.handleSuccess()
-      // auth.userSession(
-      //   action,
-      //   email.current.value,
-      //   password.current.value
-      // ).then(this.handleSuccess).catch(this.handleErrors);
+      // if(this.state.user.some(((item) => this.email.current.value === item.email) && (item => this.password.current.value === item.password))) {
+      //   localStorage.setItem('user', this.email.current.value)
+      //   // localStorage.setItem('userRole')
+      //   console.log(this.state.user)
+      //   this.handleSuccess()
+      // }else{
+      //   this.handleErrors("Wrong username")
+      // }
+           
+      this.state.user.map((item,i)=> {
+        if(this.email.current.value === item.email && this.password.current.value === item.password){
+          localStorage.setItem('user', this.email.current.value)
+          localStorage.setItem('userRole', item.role)
+          console.log(this.state.user)
+          this.handleSuccess()
+        }else{
+          this.handleErrors("Wrong Pasword")
+        }
+      })
     }
   
     resetForm() {

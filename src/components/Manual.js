@@ -31,7 +31,7 @@ import Highlighter from 'react-highlight-words';
                          </a>
         }, 
         
-        (this.state.actionVisible)?
+        (localStorage.getItem('userRole') =='admin')?
         {
           title: 'Action',
           dataIndex: '',
@@ -230,7 +230,7 @@ import Highlighter from 'react-highlight-words';
                     <Card
                         style={{margin: '2px'}} 
                         title={<span style={{color:'rgb(0, 75, 222)'}}>Product Manual List</span>}
-                        extra={
+                        extra={(localStorage.getItem('userRole')=='admin')?
                             <>
                             <Icon 
                                 style={{color: 'green'}} 
@@ -240,6 +240,8 @@ import Highlighter from 'react-highlight-words';
                             />
                             <span style={{color:'rgb(0, 75, 222)'}}>Add Manual </span>                            
                             </>
+                        :<></>
+                            
                         }
                     >
                     

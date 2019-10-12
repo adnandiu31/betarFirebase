@@ -1,6 +1,6 @@
 import React, {Component, createRef} from 'react';
 import {base, storage, db} from '../firebase/firebase';
-import { Card, Icon, Popconfirm, Table } from 'antd';
+import { Card, Icon, Popconfirm, Table, Input, Button } from 'antd';
 import { O2A } from 'object-to-array-convert';
 import {Link} from 'react-router-dom'
 import { setTimeout } from 'timers';
@@ -8,11 +8,23 @@ import { setTimeout } from 'timers';
 class Register extends Component {
     constructor(props) {
       super(props);
+
+      this.state={
+        register: null,
+        manufactures: null,
+        createManufactureFormVisible: false,
+        image: null,
+        url:null,
+        progress:null,
+        tableData: null,
+        searchText:''
+    }
+
       this.columns = [
-        { title: 'Repair Id ', dataIndex: 'registerRepairID', key: 'repair_id' },
-        { title: 'Date', dataIndex: 'registerDate', key: 'date' },
-        { title: 'Product Name', dataIndex: 'registerProductName', key: 'product_name' },
-        { title: 'Fault Location ', dataIndex: 'registerFaultLocation', key: 'fault_location' },
+        { title: 'Repair Id ', dataIndex: 'registerRepairID', key: 'repair_id', ...this.getColumnSearchProps('registerRepairID') },
+        { title: 'Date', dataIndex: 'registerDate', key: 'date', ...this.getColumnSearchProps('registerDate') },
+        { title: 'Product Name', dataIndex: 'registerProductName', key: 'registerProductName', ...this.getColumnSearchProps('registerProductName') },
+        { title: 'Fault Location ', dataIndex: 'registerFaultLocation', key: 'registerFaultLocation', ...this.getColumnSearchProps('registerFaultLocation') },
         { 
             title: 'Fault Location Image', 
             dataIndex: 'registerFaultLocationImage', 
@@ -33,16 +45,6 @@ class Register extends Component {
         </Popconfirm>,
         },
       ]; 
-
-      this.state={
-          register: null,
-          manufactures: null,
-          createManufactureFormVisible: false,
-          image: null,
-          url:null,
-          progress:null,
-          tableData: null
-      }
 
       this.registerRepairID = createRef();
       this.registerDate = createRef();
@@ -186,6 +188,68 @@ class Register extends Component {
 
     createManufactureFormShow = () => this.setState({createManufactureFormVisible:!this.state.createManufactureFormVisible})
 
+    getColumnSearchProps = dataIndex => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div style={{ padding: 8 }}>
+            <Input
+                ref={node => {
+                this.searchInput = node;
+                }}
+                placeholder={`Search ${dataIndex}`}
+                value={selectedKeys[0]}
+                onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+                style={{ width: 188, marginBottom: 8, display: 'block' }}
+            />
+            <Button
+                type="primary"
+                onClick={() => this.handleSearch(selectedKeys, confirm)}
+                icon="search"
+                size="small"
+                style={{ width: 90, marginRight: 8 }}
+            >
+                Search
+            </Button>
+            <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                Reset
+            </Button>
+            </div>
+        ),
+        filterIcon: filtered => (
+            <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
+        ),
+        onFilter: (value, record) =>
+            record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: visible => {
+            if (visible) {
+            setTimeout(() => this.searchInput.select());
+            }
+        },
+        // render: text => (
+        //   <Highlighter
+        //     highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+        //     searchWords={[this.state.searchText]}
+        //     autoEscape
+        //     textToHighlight={
+        //         text.toString()
+        //     }
+        //   />
+        // ),
+    });
+
+    handleSearch = (selectedKeys, confirm) => {
+        confirm();
+        this.setState({ searchText: selectedKeys[0] });
+    };
+
+    handleReset = clearFilters => {
+        clearFilters();
+        this.setState({ searchText: '' });
+    };
+    
     render() {
         
        const data = this.state.tableData
