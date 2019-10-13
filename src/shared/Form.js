@@ -3,7 +3,7 @@ import React, {
     createRef
   } from 'react';
   import PropTypes from 'prop-types';
-  import { auth, app, db } from '../firebase/firebase';
+  import { app } from '../firebase/firebase';
   import { O2A } from 'object-to-array-convert';
 
   class Form extends Component {
@@ -43,11 +43,11 @@ import React, {
   
     handleSubmit(event) {
       event.preventDefault();
-      const {
-        email,
-        password,
-        props: { action }
-      } = this;
+      // const {
+      //   email,
+      //   password,
+      //   props: { action }
+      // } = this;
      
       // if(this.state.user.some(((item) => this.email.current.value === item.email) && (item => this.password.current.value === item.password))) {
       //   localStorage.setItem('user', this.email.current.value)
@@ -58,7 +58,7 @@ import React, {
       //   this.handleErrors("Wrong username")
       // }
            
-      this.state.user.map((item,i)=> {
+      this.state.user.map((item,i) => {
         if(this.email.current.value === item.email && this.password.current.value === item.password){
           localStorage.setItem('user', this.email.current.value)
           localStorage.setItem('userRole', item.role)

@@ -17,7 +17,6 @@ import Highlighter from 'react-highlight-words';
         progress:null,
         tableData: null,
         searchText: '',
-        actionVisible: false
     }
       this.columns = [
         { title: 'Product Type', dataIndex: 'productTypeOfManual', key: 'productTypeOfManual', ...this.getColumnSearchProps('productTypeOfManual') },

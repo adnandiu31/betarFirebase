@@ -10,9 +10,14 @@ import { Drawer, Card} from 'antd';
 
 
 class Navbar extends React.Component{
-  handleLogout = context => {
-    auth.logout();
-    context.destroySession();
+  // handleLogout = context => {
+  //   auth.logout();
+  //   context.destroySession();
+  //   this.props.history.push('/signedOut');
+  // };
+
+  handleLogout = () => {
+    localStorage.clear();
     this.props.history.push('/signedOut');
   };
 
@@ -64,9 +69,9 @@ class Navbar extends React.Component{
                 className="list-group list-group-horizontal"
               >
                 <li className="list-group-item">
-                  <span onClick={() => this.handleLogout(context)}>
+                  {/* <span onClick={() => this.handleLogout(context)}>
                     Logout
-                  </span>
+                  </span> */}
                 </li>
               </ul>
             </div>
@@ -91,11 +96,19 @@ class Navbar extends React.Component{
                 }}
                 className="list-group list-group-horizontal"
               >
-                <Link to="/login">
+                {
+                  (localStorage.getItem('userRole') == null)?
+                  <Link to="/login">
+                    <li className="list-group-item">
+                      Login
+                    </li>
+                  </Link>
+                  :
                   <li className="list-group-item">
-                    Login
+                    <a onClick={this.handleLogout}>Logout</a>
                   </li>
-                </Link>
+                }
+                
                 <Link to="/signup">
                   <li className="list-group-item">
                     Create Account

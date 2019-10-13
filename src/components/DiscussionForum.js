@@ -10,22 +10,24 @@ class DiscussionForum extends Component {
     constructor(props) {
       super(props);
       this.columns = [
-        { title: 'FAQ ', dataIndex: 'faqQuestion', key: 'faqQuestion' },
+        { title: 'Discussions ', dataIndex: 'discussionQuestion', key: 'discussionQuestion' },
+        (localStorage.getItem('userRole') =='admin')?
         {
             title: 'Action',        
             dataIndex: '',
             key: 'x',
             render: (text, record) =>
           //   this.state.manuals.length >= 1 ? (
-              <Popconfirm title="Sure to delete?" onConfirm={() => this.deleteFAQ(text.faqID)}>
+              <Popconfirm title="Sure to delete?" onConfirm={() => this.deleteFAQ(text.discussionID)}>
                 <a>Delete</a>
                 
               </Popconfirm>
           //   ) : null,
-          },
+          }:{},
         ]
       this.state={
           stations: null,
+          discussion: null,
           faq: null,
           createStationFormVisible: false,
           pdf: null,
@@ -34,9 +36,9 @@ class DiscussionForum extends Component {
           tableData: null
       }
 
-      this.faqQuestion = createRef();
-      this.faqAnswer = createRef();
-      this.faqID = createRef();
+      this.discussionQuestion = createRef();
+      this.discussionAnswer = createRef();
+      this.discussionID = createRef();
     }
     
     componentDidMount() {
@@ -44,11 +46,15 @@ class DiscussionForum extends Component {
         context: this,
         state: "stations"
       });
-      this.ref = base.syncState(`faq`,{
-          context: this,
-          state: "faq"
-      });
-      db.ref('/faq').on('value', (data)=>{
+      // this.ref = base.syncState(`faq`,{
+      //     context: this,
+      //     state: "faq"
+      // });
+      this.ref = base.syncState(`discussion`,{
+        context: this,
+        state: "discussion"
+    });
+      db.ref('/discussion').on('value', (data)=>{
         const value = O2A(data)
         this.setState({tableData: value})        
         })
@@ -56,22 +62,22 @@ class DiscussionForum extends Component {
 
     createFAQ = event => {
         // event.preventDefault();
-        this.addFAQ( this.faqQuestion.current.value)
+        this.addFAQ( this.discussionQuestion.current.value)
         event.currentTarget.reset();
     };
 
-    addFAQ = (faqQuestion) => {
-      const faq = { ...this.state.faq };
-      const id = parseInt(Object.keys(this.state.faq)[Object.keys(this.state.faq).length-1])+1
-      faq[id] =  {faqID:id,faqQuestion};
-      this.setState({ faq });
+    addFAQ = (discussionQuestion) => {
+      const discussion = { ...this.state.discussion };
+      const id = parseInt(Object.keys(this.state.discussion)[Object.keys(this.state.discussion).length-1])+1
+      discussion[id] =  {discussionID:id,discussionQuestion};
+      this.setState({ discussion });
     };
 
     deleteFAQ = name => {
         console.log("delete FAQ function" + name)
-      const faq = {...this.state.faq}
-      faq[`${name}`] = null;
-      this.setState({faq})
+      const discussion = {...this.state.discussion}
+      discussion[`${name}`] = null;
+      this.setState({discussion})
     }
 
     addComment = () => {
@@ -82,7 +88,7 @@ class DiscussionForum extends Component {
           {console.log("dafskjb")}
             <div>
                 {
-                  ans.faqAnswer.map(
+                  ans.discussionAnswer.map(
                   (ans)=>{
                     return <p>{ans}
                     {console.log(ans + "checking")}
@@ -133,7 +139,7 @@ class DiscussionForum extends Component {
           </div>
             {this.state.faq?
                 <div id="stations" style={{width: '100%', padding: "0 25px"}} >        
-                    <Card style={{margin: '2px'}} title={<span style={{color:'rgb(0, 75, 222)'}}>FAQ List</span>}
+                    <Card style={{margin: '2px'}} title={<span style={{color:'rgb(0, 75, 222)'}}>Discussion List</span>}
                         extra={
                             <>
                             <Icon 
@@ -142,7 +148,7 @@ class DiscussionForum extends Component {
                                 key="edit" 
                                 onClick={this.createStationFormShow}
                             />
-                            <span style={{color:'rgb(0, 75, 222)'}}>Add FAQ </span>                            
+                            <span style={{color:'rgb(0, 75, 222)'}}>Add Discussion </span>                            
                             </>
                         }
                     >
@@ -153,11 +159,11 @@ class DiscussionForum extends Component {
                                     <div className="form-group">
                                         Question
                                         <input
-                                            name="faqQuestion"
+                                            name="discussionQuestion"
                                             className="form-control"
                                             type="text"
                                             autoComplete="none"
-                                            ref={this.faqQuestion}
+                                            ref={this.discussionQuestion}
                                         />
                                     </div>
                                     <button type="submit" className="btn btn-primary" >
@@ -172,13 +178,6 @@ class DiscussionForum extends Component {
                                                 this.addAnswer
                                                 }  
                                         dataSource={data} />
-                                        {/* record => 
-                                                <div>
-                                                <p>
-                                                  {record.faqAnswer}
-                                                </p> 
-                                                <h3>ndfjkf</h3>
-                                                </div> */}
                             </div>
                         </div>
                     </Card>

@@ -35,15 +35,17 @@ class Register extends Component {
         { title: 'PDF', dataIndex: "registerPDF", key: 'registerPDF' ,
           render: (text, record) => <a>Download</a>
         },  
+        (localStorage.getItem('userRole') =='admin')?
         {
           title: 'Action',
           dataIndex: '',
           key: 'x',
           render: (text, record) => 
           <Popconfirm title="Sure to delete?" onConfirm={() => this.deleteRegister(record.registerRepairID)}>
-          <a>Delete</a>
+          <a alt="Inprogress">Delete</a>
         </Popconfirm>,
-        },
+        }:
+        {},
       ]; 
 
       this.registerRepairID = createRef();
@@ -286,10 +288,13 @@ class Register extends Component {
                         style={{margin: '2px'}} 
                         title={<span style={{color:'rgb(0, 75, 222)'}}>Trouble Shooting Register</span>}
                         extra={
+                            <>
                             <Icon 
                                 style={{color: 'green'}} type="edit" key="edit" 
                                 onClick={this.createManufactureFormShow}
                             />
+                            <span style={{color:'rgb(0, 75, 222)'}}>Add Register </span> 
+                            </>
                         }
                     >
                     <div className='col-lg-12 col-md-12 col-sm-12'>{this.state.createManufactureFormVisible === true?

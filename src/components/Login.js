@@ -12,7 +12,7 @@ const Login = props => <Consumer>
           action="signIn"
           title="Login"
           onSuccess={() => props.history.push('/FAQ')}
-          onError={({ message }) => context.setMessage(`Login failed: ${message}`)}
+          // onError={({ message }) => context.setMessage(`Login failed: ${message}`)}
         />
       </Card>
     </div>
