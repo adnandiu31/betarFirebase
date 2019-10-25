@@ -10,7 +10,6 @@ class Header extends React.Component{
                         style={{backgroundColor: '#02007f'}}
                         className="navbar navbar-dark"
                     >
-                         
                         <a 
                             style={{
                                 fontSize: '35px',
@@ -21,7 +20,7 @@ class Header extends React.Component{
                             className="navbar-brand" 
                             href="#"
                         >
-                            Demo project
+                            Bangladesh Betar
                         </a>
                         <button   
                             onClick={this.props.showNavbar}

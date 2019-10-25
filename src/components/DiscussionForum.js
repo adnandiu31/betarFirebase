@@ -42,26 +42,18 @@ class DiscussionForum extends Component {
     }
     
     componentDidMount() {
-      this.ref = base.syncState(`stations`, {
-        context: this,
-        state: "stations"
-      });
-      // this.ref = base.syncState(`faq`,{
-      //     context: this,
-      //     state: "faq"
-      // });
       this.ref = base.syncState(`discussion`,{
         context: this,
         state: "discussion"
-    });
+      });
       db.ref('/discussion').on('value', (data)=>{
         const value = O2A(data)
         this.setState({tableData: value})        
-        })
+      })
     }
 
     createFAQ = event => {
-        // event.preventDefault();
+        event.preventDefault();
         this.addFAQ( this.discussionQuestion.current.value)
         event.currentTarget.reset();
     };
@@ -80,25 +72,47 @@ class DiscussionForum extends Component {
       this.setState({discussion})
     }
 
-    addComment = () => {
-      console.log("ad Commnet")
+    addComment = (e, ans) => {
+      const discussion = { ...this.state.discussion };
+      var id = ans.discussionID
+      const discussionAnswer = discussion[`${id}`].discussionAnswer
+
+      if(!discussionAnswer){
+        discussion[`${id}`] = {
+          discussionAnswer: {
+            0: this.discussionAnswer.current.value
+          }
+        }
+      }
+      else{
+        discussionAnswer.push(this.discussionAnswer.current.value)
+        discussion[`${id}`] = {
+          discussionAnswer: discussionAnswer
+        }
+      }
+            
+      this.setState({ discussion });      
     }
 
-    addAnswer = ans => <>
-          {console.log("dafskjb")}
-            <div>
-                {
+    addAnswer = (ans) => <>
+                { console.log(ans)}
+                {ans.discussionAnswer?
                   ans.discussionAnswer.map(
                   (ans)=>{
-                    return <p>{ans}
-                    {console.log(ans + "checking")}
-                    </p>
+                    return <p>- {ans}
+                        {console.log(ans + "checking")}
+                      </p>
                   }
-                  )
+                  ):''
                 }
-              <Button title="Add Comment"  onClick={this.addComment} />
-              
-            </div> 
+              <input
+                  name="discussionAnswer"
+                  className="form-control"
+                  type="text"
+                  autoComplete="none"
+                  ref={this.discussionAnswer}
+              />
+              <Button  onClick={(e)=> {this.addComment(e, ans)} } > Add Comment </Button>
           </>
     
     updateStationAddress = (name, address) => {
@@ -137,7 +151,7 @@ class DiscussionForum extends Component {
               </li>             
             </ul>
           </div>
-            {this.state.faq?
+            {this.state.discussion?
                 <div id="stations" style={{width: '100%', padding: "0 25px"}} >        
                     <Card style={{margin: '2px'}} title={<span style={{color:'rgb(0, 75, 222)'}}>Discussion List</span>}
                         extra={
