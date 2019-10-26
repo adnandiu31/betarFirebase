@@ -62,7 +62,7 @@ import React, {
         if(this.email.current.value === item.email && this.password.current.value === item.password){
           localStorage.setItem('user', this.email.current.value)
           localStorage.setItem('userRole', item.role)
-          console.log(this.state.user)
+          localStorage.setItem('userID', item.object_key)
           this.handleSuccess()
         }else{
           this.handleErrors("Wrong Pasword")

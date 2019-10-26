@@ -46,6 +46,21 @@ class Register extends Component {
         </Popconfirm>,
         }:
         {},
+        (localStorage.getItem('userRole') =='admin')?
+        {
+          title: 'Status',
+          dataIndex: '',
+          key: 'y',
+          render: (text, record) => (record.approve == 1)?"Approved":
+                                        <>
+                                        {console.log(record.object_key)}
+                                        <Popconfirm title="Sure to Approve?" onConfirm={() => this.approveRegister(record.object_key)}>
+                                            <a alt="Inprogress">Pending</a>
+                                            
+                                        </Popconfirm>
+                                        </>,
+        }:
+        {},
       ]; 
 
       this.registerRepairID = createRef();
@@ -60,7 +75,11 @@ class Register extends Component {
       this.registerAuthorDesignation = createRef();
       this.registerAuthorMobile = createRef();
       this.registerAuthorEmail = createRef();
-      this.registerPDF = createRef()
+      this.registerPDF = createRef();
+      this.registerFault = createRef();
+      this.approve = createRef();
+      this.creatorID = createRef();
+      this.userRole = createRef();
     }
     
     componentDidMount() {
@@ -96,6 +115,7 @@ class Register extends Component {
             this.registerAuthorDesignation.current.value,
             this.registerAuthorMobile.current.value,
             this.registerAuthorEmail.current.value,
+            this.registerFault.current.value
         )
         event.currentTarget.reset();
     };
@@ -113,7 +133,8 @@ class Register extends Component {
             registerAuthorStation,  
             registerAuthorDesignation ,
             registerAuthorMobile,
-            registerAuthorEmail 
+            registerAuthorEmail,
+            registerFault 
         ) => {
             
             const register = { ...this.state.register };
@@ -132,7 +153,11 @@ class Register extends Component {
                     registerAuthorStation:registerAuthorStation,  
                     registerAuthorDesignation:registerAuthorDesignation ,
                     registerAuthorMobile: registerAuthorMobile,
-                    registerAuthorEmail:registerAuthorEmail
+                    registerAuthorEmail:registerAuthorEmail,
+                    registerFault : registerFault,
+                    approve : 0,
+                    userRole : localStorage.getItem('userRole'),
+                    userID : localStorage.getItem('userID')
                     };
             }, 5000)
             
@@ -165,9 +190,16 @@ class Register extends Component {
             }
         )
     }
+    approveRegister = id => {
+        const register = {...this.state.register}
+        register[`${id}`] = {
+            approve: 1
+        }
+        this.setState({register})
+    }
 
     deleteRegister = id => {
-        console.log(id)
+        // console.log(id)
       const register = {...this.state.register}
     //   console.log(manufactures[`${name}`])
       register[`${id}`] = null;
@@ -176,14 +208,14 @@ class Register extends Component {
 
     updateManufactureCountry = (name, country) => {
       const manufactures = {...this.state.manufactures}
-      console.log(manufactures[`${name}`])
+    //   console.log(manufactures[`${name}`])
       manufactures[`${name}`].Country = country;
       this.setState({manufactures})
     }
 
     updateManufactureAddress = (name, address) => {
         const manufactures = {...this.state.manufactures}
-        console.log(manufactures[`${name}`])
+        // console.log(manufactures[`${name}`])
         manufactures[`${name}`].Address = address;
         this.setState({manufactures})
     }
@@ -253,9 +285,10 @@ class Register extends Component {
     };
     
     render() {
-        
-       const data = this.state.tableData
-        
+       const datalist = this.state.tableData
+       const data = (datalist != null && localStorage.getItem('userRole') != 'admin')? 
+                        datalist.filter(data => data.approve == 1) : this.state.tableData
+      
         return  (
             <>
             <div className="top-nav" style={{ background:'#007bff', position: 'sticky', top: 0, zIndex: 100 }} >
@@ -318,6 +351,13 @@ class Register extends Component {
                                 <input
                                     name="registerProductName" className="form-control" type="text"                                            
                                     ref={this.registerProductName}
+                                />
+                            </div>
+                            <div className="form-group">
+                                Fault
+                                <input
+                                    name="registerFault" className="form-control" type="text"                                            
+                                    ref={this.registerFault}
                                 />
                             </div>
                             <div className="form-group">
@@ -398,14 +438,17 @@ class Register extends Component {
                                 expandedRowRender=
                                     {record => 
                                         <p style={{ margin: 0 }}>
+                                            <h3>Fault</h3>
+                                            {record.registerFault}
+                                            <br></br>
                                             <h3>Solution</h3>
                                             { record.registerSolution}
                                             <br />
                                             <br></br>
                                             <h3>Solved By</h3>
                                             <b >{record.registerAuthorName}</b> <br />
-                                            {record.registerAuthorDesignation} <br />
-                                            {record.registerAuthorStation} <br />
+                                            Designation: {record.registerAuthorDesignation} <br />
+                                            Station: {record.registerAuthorStation} <br />
                                             email: {record.registerAuthorEmail} <br />
                                             Mobile: {record.registerAuthorMobile}
                                         </p>
