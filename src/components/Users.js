@@ -2,6 +2,7 @@ import React, {Component, createRef} from 'react';
 import {base} from '../firebase/firebase';
 import { Card, Icon } from 'antd';
 import ContentEditable from 'react-contenteditable'
+import NavList from '../shared/NavList';
 
   class Users extends Component {
     constructor(props) {
@@ -117,7 +118,9 @@ import ContentEditable from 'react-contenteditable'
         }</select>
     render() {
         return  (
-            <>{this.state.products?
+            <>
+            <NavList />
+            {this.state.products?
                 <div 
                     id="users" 
                     style={{width: '100%', padding: "25px"}} 

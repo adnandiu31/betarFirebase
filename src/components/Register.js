@@ -2,8 +2,8 @@ import React, {Component, createRef} from 'react';
 import {base, storage, db} from '../firebase/firebase';
 import { Card, Icon, Popconfirm, Table, Input, Button } from 'antd';
 import { O2A } from 'object-to-array-convert';
-import {Link} from 'react-router-dom'
 import { setTimeout } from 'timers';
+import NavList from '../shared/NavList';
 
 class Register extends Component {
     constructor(props) {
@@ -33,29 +33,29 @@ class Register extends Component {
         },
         { title: 'Symptom', dataIndex: 'registerSymtom', key: 'registerSymtom' },
         { title: 'PDF', dataIndex: "registerPDF", key: 'registerPDF' ,
-          render: (text, record) => <a>Download</a>
+          render: (text, record) => <a href="onConfirm={() => this.registerDownload(record.registerRepairID)}">Download</a>
         },  
-        (localStorage.getItem('userRole') =='admin')?
+        (localStorage.getItem('userRole') === 'admin')?
         {
           title: 'Action',
           dataIndex: '',
           key: 'x',
           render: (text, record) => 
           <Popconfirm title="Sure to delete?" onConfirm={() => this.deleteRegister(record.registerRepairID)}>
-          <a alt="Inprogress">Delete</a>
+          <a alt="Inprogress" href="onConfirm={() => this.deleteRegister(record.registerRepairID)}">Delete</a>
         </Popconfirm>,
         }:
         {},
-        (localStorage.getItem('userRole') =='admin')?
+        (localStorage.getItem('userRole') === 'admin')?
         {
           title: 'Status',
           dataIndex: '',
           key: 'y',
-          render: (text, record) => (record.approve == 1)?"Approved":
+          render: (text, record) => (record.approve === 1)?"Approved":
                                         <>
                                         {console.log(record.object_key)}
                                         <Popconfirm title="Sure to Approve?" onConfirm={() => this.approveRegister(record.object_key)}>
-                                            <a alt="Inprogress">Pending</a>
+                                            <a alt="Inprogress" href="onConfirm={() => this.approveRegister(record.object_key)"> Pending</a>
                                             
                                         </Popconfirm>
                                         </>,
@@ -286,35 +286,12 @@ class Register extends Component {
     
     render() {
        const datalist = this.state.tableData
-       const data = (datalist != null && localStorage.getItem('userRole') != 'admin')? 
-                        datalist.filter(data => data.approve == 1) : this.state.tableData
+       const data = (datalist != null && localStorage.getItem('userRole') !== 'admin')? 
+                        datalist.filter(data => data.approve === 1) : this.state.tableData
       
         return  (
             <>
-            <div className="top-nav" style={{ background:'#007bff', position: 'sticky', top: 0, zIndex: 100 }} >
-                <ul className="nav nav-tabs">
-                    <li className="nav-item">
-                        <Link to="/manual-list" >
-                            <a style={{color: 'black'}} className="nav-link" >Manual List</a>                
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link to="/register">
-                        <a style={{color: 'black'}} className="nav-link" >Trouble Shooting Register</a>
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link to="/FAQ">
-                        <a style={{color: 'black'}} className="nav-link" >FAQ</a>
-                        </Link>
-                    </li>   
-                    <li className="nav-item">
-                        <Link to="/discussion-forum">
-                        <a style={{color: 'black'}} className="nav-link" >Discussion Forum</a>
-                        </Link>
-                    </li>            
-                </ul>
-            </div>
+            <NavList />
             {this.state.register?
                 <div id="manufactures"  style={{width: '100%', padding: "25px"}} >        
                     <Card

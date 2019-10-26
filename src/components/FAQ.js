@@ -1,9 +1,9 @@
 import React, {Component, createRef} from 'react';
 import {base, db} from './../firebase/firebase';
 import { Card, Icon, Popconfirm, Table, Input, Button } from 'antd';
-// import ContentEditable from 'react-contenteditable'
-import {Link } from 'react-router-dom'
 import { O2A } from 'object-to-array-convert';
+import NavList from '../shared/NavList';
+
 // import Highlighter from 'react-highlight-words';
 
 class FAQ extends Component {
@@ -23,7 +23,7 @@ class FAQ extends Component {
 
       this.columns = [
         { title: 'FAQ ', dataIndex: 'faqQuestion', key: 'faqQuestion', ...this.getColumnSearchProps('faqQuestion') },
-        (localStorage.getItem('userRole') =='admin')?
+        (localStorage.getItem('userRole') === 'admin')?
         {
             title: 'Action',        
             dataIndex: '',
@@ -31,7 +31,7 @@ class FAQ extends Component {
             render: (text, record) =>
           //   this.state.manuals.length >= 1 ? (
               <Popconfirm title="Sure to delete?" onConfirm={() => this.deleteFAQ(text.faqID)}>
-                <a>Delete</a>
+                <a href="onConfirm={() => this.deleteFAQ(text.faqID)}">Delete</a>
                 
               </Popconfirm>
           //   ) : null,
@@ -150,34 +150,11 @@ class FAQ extends Component {
         const data = this.state.tableData
         return  (
             <>
-            <div className="top-nav" style={{ background:'#007bff', position: 'sticky', top: 0, zIndex: 100}} >
-            <ul className="nav nav-tabs">
-              <li className="nav-item">
-                <Link to="/manual-list" >
-                    <a style={{color: 'black'}} className="nav-link" >Manual List</a>                
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/register">
-                  <a style={{color: 'black'}} className="nav-link" >Trouble Shooting Register</a>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/FAQ">
-                  <a style={{color: 'black'}} className="nav-link" >FAQ</a>
-                </Link>
-              </li> 
-              <li className="nav-item">
-                <Link to="/discussion-forum">
-                  <a style={{color: 'black'}} className="nav-link" >Discussion Forum</a>
-                </Link>
-              </li>              
-            </ul>
-          </div>
+            <NavList />
             {this.state.faq?
                 <div id="stations" style={{width: '100%', padding: "0 25px"}} >        
                     <Card style={{margin: '2px'}} title={<span style={{color:'rgb(0, 75, 222)'}}>FAQ List</span>}
-                        extra={(localStorage.getItem('userRole')=='admin')?
+                        extra={(localStorage.getItem('userRole') === 'admin')?
                             <>
                             <Icon 
                                 style={{color: 'green'}} 

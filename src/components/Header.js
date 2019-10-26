@@ -10,7 +10,7 @@ class Header extends React.Component{
                         style={{backgroundColor: '#02007f'}}
                         className="navbar navbar-dark"
                     >
-                        <a 
+                        {/* <a 
                             style={{
                                 fontSize: '35px',
                                 fontFamily: 'Cookie, cursive',
@@ -19,9 +19,9 @@ class Header extends React.Component{
                             }} 
                             className="navbar-brand" 
                             href="#"
-                        >
+                        > */}
                             Bangladesh Betar
-                        </a>
+                        {/* </a> */}
                         <button   
                             onClick={this.props.showNavbar}
                             style={{

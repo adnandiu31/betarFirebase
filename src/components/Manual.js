@@ -2,8 +2,8 @@ import React, {Component, createRef} from 'react';
 import {base, storage, db} from '../firebase/firebase';
 import { Card, Icon, Popconfirm, Table, Input, Button } from 'antd';
 import { O2A } from 'object-to-array-convert';
-import {Link } from 'react-router-dom'
-import Highlighter from 'react-highlight-words';
+import NavList from '../shared/NavList';
+// import Highlighter from 'react-highlight-words';
 
   class Stations extends Component {
     constructor(props) {
@@ -30,7 +30,7 @@ import Highlighter from 'react-highlight-words';
                          </a>
         }, 
         
-        (localStorage.getItem('userRole') =='admin')?
+        (localStorage.getItem('userRole') === 'admin')?
         {
           title: 'Action',
           dataIndex: '',
@@ -199,37 +199,14 @@ import Highlighter from 'react-highlight-words';
         const data = this.state.tableData
         return  (
             <>
-            <div className="top-nav" style={{ background:'#007bff',position: 'sticky',top: 0,zIndex: 100}} >
-            <ul className="nav nav-tabs">
-              <li className="nav-item">
-                <Link to="/manual-list" style={{color: 'black'}} className="nav-link">
-                    Manual List              
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/register" style={{color: 'black'}} className="nav-link">
-                  Trouble Shooting Register
-                </Link>
-              </li>
-              <li className="nav-item" >
-                <Link to="/FAQ" style={{color: 'black'}} className="nav-link">
-                  FAQ
-                </Link>
-              </li>  
-              <li className="nav-item" >
-                <Link to="/discussion-forum" style={{color: 'black'}} className="nav-link">
-                  Discussion Forum
-                </Link>
-              </li>             
-            </ul>
-          </div>
+            <NavList />
             {this.state.stations?
                 <div id="Manual" style={{width: '100%', padding: "0 25px"}} 
                 >        
                     <Card
                         style={{margin: '2px'}} 
                         title={<span style={{color:'rgb(0, 75, 222)'}}>Product Manual List</span>}
-                        extra={(localStorage.getItem('userRole')=='admin')?
+                        extra={(localStorage.getItem('userRole') === 'admin')?
                             <>
                             <Icon 
                                 style={{color: 'green'}} 

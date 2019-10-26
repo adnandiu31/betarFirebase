@@ -1,6 +1,5 @@
-import React, {Component, createRef} from 'react';
-
-
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class NavList extends Component {
     render(){
@@ -8,25 +7,35 @@ class NavList extends Component {
             <div className="top-nav" style={{ background:'#007bff', position: 'sticky', top: 0, zIndex: 100 }} >
                 <ul className="nav nav-tabs">
                     <li className="nav-item">
-                        <Link to="/manual-list" >
-                            <a style={{color: 'black'}} className="nav-link" >Manual List</a>                
+                        <Link to="/users" style={{color: 'black'}} className="nav-link">
+                            Users
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link to="/register">
-                        <a style={{color: 'black'}} className="nav-link" >Trouble Shooting Register</a>
+                        <Link to="/product" style={{color: 'black'}} className="nav-link">
+                            Product
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link to="/FAQ">
-                        <a style={{color: 'black'}} className="nav-link" >FAQ</a>
+                        <Link to="/manual-list" style={{color: 'black'}} className="nav-link">
+                            Manual List             
                         </Link>
-                    </li>   
+                    </li>
                     <li className="nav-item">
-                        <Link to="/discussion-forum">
-                        <a style={{color: 'black'}} className="nav-link" >Discussion Forum</a>
+                        <Link to="/register" style={{color: 'black'}} className="nav-link">
+                            Trouble Shooting Register
                         </Link>
-                    </li>            
+                    </li>
+                    <li className="nav-item">
+                        <Link to="/FAQ" style={{color: 'black'}} className="nav-link">
+                            FAQ
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link to="/discussion-forum" style={{color: 'black'}} className="nav-link">
+                            Discussion Forum
+                        </Link>
+                    </li>           
                 </ul>
             </div>
         )

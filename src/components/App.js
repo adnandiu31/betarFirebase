@@ -21,6 +21,8 @@ import ManualList from './Manual';
 import FAQ from '../components/FAQ'
 import DiscussionForum from './../components/DiscussionForum';
 import Users from './../components/Users'
+import Product from './../components/Proructs';
+
 class App extends Component {
   constructor(props){
     super(props)
@@ -80,6 +82,7 @@ class App extends Component {
             <Route exact path="/manual-list" component={ManualList} />
             <Route exact path="/discussion-forum" component={DiscussionForum} />
             <Route exact path="/users" component={Users} />
+            <Route exact path="/product" component={Product} />
           </Fragment>
         </Router>
       </AppProvider>
