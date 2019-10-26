@@ -6,36 +6,74 @@ class NavList extends Component {
         return (
             <div className="top-nav" style={{ background:'#007bff', position: 'sticky', top: 0, zIndex: 100 }} >
                 <ul className="nav nav-tabs">
-                    <li className="nav-item">
-                        <Link to="/users" style={{color: 'black'}} className="nav-link">
-                            Users
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link to="/product" style={{color: 'black'}} className="nav-link">
-                            Product
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link to="/manual-list" style={{color: 'black'}} className="nav-link">
-                            Manual List             
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link to="/register" style={{color: 'black'}} className="nav-link">
-                            Trouble Shooting Register
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link to="/FAQ" style={{color: 'black'}} className="nav-link">
-                            FAQ
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link to="/discussion-forum" style={{color: 'black'}} className="nav-link">
-                            Discussion Forum
-                        </Link>
-                    </li>           
+                    {(localStorage.getItem('userRole') === 'admin')?
+                    <>
+                        <li className="nav-item">
+                            <Link to="/users" style={{color: 'black'}} className="nav-link">
+                                Users
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/products" style={{color: 'black'}} className="nav-link">
+                                Product
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/manufacturers" style={{color: 'black'}} className="nav-link">
+                                Manufacturer
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/stations" style={{color: 'black'}} className="nav-link">
+                                Station
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/manual-list" style={{color: 'black'}} className="nav-link">
+                                Manual List             
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/register" style={{color: 'black'}} className="nav-link">
+                                Trouble Shooting Register
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/FAQ" style={{color: 'black'}} className="nav-link">
+                                FAQ
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/discussion-forum" style={{color: 'black'}} className="nav-link">
+                                Discussion Forum
+                            </Link>
+                        </li>  
+                    </>
+                        
+                    :
+                    <>
+                        <li className="nav-item">
+                            <Link to="/manual-list" style={{color: 'black'}} className="nav-link">
+                                Manual List             
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/register" style={{color: 'black'}} className="nav-link">
+                                Trouble Shooting Register
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/FAQ" style={{color: 'black'}} className="nav-link">
+                                FAQ
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/discussion-forum" style={{color: 'black'}} className="nav-link">
+                                Discussion Forum
+                            </Link>
+                        </li> 
+                    </>}
+                             
                 </ul>
             </div>
         )

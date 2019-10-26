@@ -105,7 +105,7 @@ class Navbar extends React.Component{
                   </Link>
                   :
                   <li className="list-group-item">
-                    <a onClick={this.handleLogout} href="onClick={this.handleLogout}">Logout</a>
+                    <a onClick={this.handleLogout} >Logout</a>
                   </li>
                 }
                 

@@ -22,6 +22,8 @@ import FAQ from '../components/FAQ'
 import DiscussionForum from './../components/DiscussionForum';
 import Users from './../components/Users'
 import Product from './../components/Proructs';
+import Manufacturer from './../components/Manufacturer';
+import Station from './../components/Station';
 
 class App extends Component {
   constructor(props){
@@ -32,7 +34,6 @@ class App extends Component {
 
   showNavbar = () => this.setState({visibleNavbar: true})
   onCloseNavbar = () => this.setState({visibleNavbar: false})
-  
 
   render() {
     return (
@@ -82,7 +83,9 @@ class App extends Component {
             <Route exact path="/manual-list" component={ManualList} />
             <Route exact path="/discussion-forum" component={DiscussionForum} />
             <Route exact path="/users" component={Users} />
-            <Route exact path="/product" component={Product} />
+            <Route exact path="/products" component={Product} />
+            <Route exact path="/manufacturers" component={Manufacturer} />
+            <Route exact path="/stations" component={Station} />
           </Fragment>
         </Router>
       </AppProvider>
