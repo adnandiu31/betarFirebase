@@ -1,44 +1,41 @@
 import React from 'react';
 import { Consumer } from './AppProvider';
+import { Link, withRouter } from 'react-router-dom'
 
-class Header extends React.Component{
+class Header extends React.Component{   
+
+    handleLogout = (event) => {
+        localStorage.clear();
+        this.props.history.push('/signedOut');
+      };
+
     render(){
         return(
-            <Consumer>{({ state, ...context }) => (
-                // state.currentUser && this.props.role?
-                    <nav 
-                        style={{backgroundColor: '#02007f'}}
-                        className="navbar navbar-dark"
-                    >
-                        {/* <a 
-                            style={{
-                                fontSize: '35px',
-                                fontFamily: 'Cookie, cursive',
-                                textShadow: '-1px -3px 5px black',
-                                padding: '0'
-                            }} 
-                            className="navbar-brand" 
-                            href="#"
-                        > */}
-                            Bangladesh Betar
-                        {/* </a> */}
-                        <button   
-                            onClick={this.props.showNavbar}
-                            style={{
-                                borderRadius: "50%",
-                                height: '40px',
-                                width: '40px',
-                                boxShadow: '0 0 0px 1px #656060'
-                            }}
-                        >
-                             <span aria-hidden="true">&gt;</span>
+            <Consumer>
+                {({ state, ...context }) => (
+                    <nav style={{backgroundColor: '#02007f'}} className="navbar navbar-dark" >Bangladesh Betar
+                        <button >
+                             {
+                                    (localStorage.getItem('userRole') == null)?
+                                    <Link to="/login">
+                                    <li className="list-group-item">
+                                        Login
+                                    </li>
+                                    </Link>
+                                    :
+                                    <Link to='/signedOut'>
+                                        <li className="list-group-item">
+                                            <a onClick={this.handleLogout} >Logout</a>
+                                        </li>
+                                    </Link>
+                                }
                         </button>
                     </nav>
-                    // :''
                 )
             }</Consumer>
         )
     }
 }
 
-export default Header
+export default withRouter(Header)
+
